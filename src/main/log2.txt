@@ -1,0 +1,271 @@
+*** Starting wc test.
+new coordinator
+
+
+MapDone
+worker 0 complete reduce 0
+MapDone
+worker 0 complete reduce 1
+MapDone
+MapDone
+MapDone
+worker 2 complete reduce 3
+MapDone
+worker 0 complete reduce 2
+MapDone
+worker 2 complete reduce 5
+MapDone
+worker 1 complete reduce 4
+MapDone
+worker 2 complete reduce 7
+MapDone
+worker 1 complete reduce 8
+MapDone
+worker 0 complete reduce 6
+MapDone
+worker 2 complete reduce 9
+MapDone
+ReduceDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+--- wc test: PASS
+*** Starting indexer test.
+new coordinator
+
+
+MapDone
+worker 0 complete reduce 0
+MapDone
+worker 0 complete reduce 1
+MapDone
+worker 0 complete reduce 2
+MapDone
+worker 0 complete reduce 3
+MapDone
+worker 0 complete reduce 4
+MapDone
+worker 0 complete reduce 5
+MapDone
+worker 0 complete reduce 6
+MapDone
+worker 0 complete reduce 7
+MapDone
+worker 0 complete reduce 8
+MapDone
+worker 0 complete reduce 9
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+--- indexer test: PASS
+*** Starting map parallelism test.
+new coordinator
+
+
+MapDone
+worker 1 complete reduce 0
+MapDone
+worker 1 complete reduce 1
+MapDone
+worker 1 complete reduce 2
+MapDone
+worker 1 complete reduce 3
+MapDone
+worker 1 complete reduce 4
+MapDone
+worker 1 complete reduce 5
+MapDone
+worker 1 complete reduce 6
+MapDone
+worker 1 complete reduce 7
+MapDone
+worker 1 complete reduce 8
+MapDone
+worker 1 complete reduce 9
+MapDone
+ReduceDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+--- map parallelism test: PASS
+*** Starting reduce parallelism test.
+new coordinator
+
+
+MapDone
+MapDone
+worker 0 complete reduce 0
+MapDone
+worker 1 complete reduce 1
+MapDone
+worker 0 complete reduce 2
+MapDone
+worker 1 complete reduce 3
+MapDone
+worker 0 complete reduce 4
+MapDone
+worker 1 complete reduce 5
+MapDone
+worker 1 complete reduce 7
+MapDone
+worker 1 complete reduce 8
+MapDone
+worker 0 complete reduce 6
+MapDone
+worker 1 complete reduce 9
+MapDone
+ReduceDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+--- reduce parallelism test: PASS
+*** Starting job count test.
+new coordinator
+
+
+MapDone
+MapDone
+worker 0 complete reduce 0
+worker 1 complete reduce 1
+MapDone
+MapDone
+worker 1 complete reduce 3
+worker 0 complete reduce 2
+MapDone
+MapDone
+worker 0 complete reduce 4
+worker 1 complete reduce 5
+MapDone
+MapDone
+worker 0 complete reduce 6
+worker 1 complete reduce 7
+MapDone
+MapDone
+worker 0 complete reduce 8
+worker 1 complete reduce 9
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+--- job count test: PASS
+*** Starting early exit test.
+new coordinator
+
+
+MapDone
+worker 0 complete reduce 0
+MapDone
+worker 0 complete reduce 1
+MapDone
+MapDone
+MapDone
+worker 2 complete reduce 4
+worker 1 complete reduce 3
+MapDone
+MapDone
+worker 2 complete reduce 5
+MapDone
+worker 2 complete reduce 7
+MapDone
+worker 2 complete reduce 8
+MapDone
+worker 2 complete reduce 9
+MapDone
+MapDone
+worker 0 complete reduce 2
+MapDone
+MapDone
+worker 1 complete reduce 6
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+--- early exit test: PASS
+*** Starting crash test.
+new coordinator
+
+
+worker 0 crashed at 2023-10-10 15:42:32.508480701 +0800 CST m=+1.504435675
+MapDone
+MapDone
+worker 1 complete reduce 1
+MapDone
+MapDone
+worker 3 complete reduce 3
+MapDone
+worker 3 complete reduce 4
+MapDone
+worker 1 crashed at 2023-10-10 15:42:42.01717583 +0800 CST m=+11.013130816
+worker 4 crashed at 2023-10-10 15:42:43.018553666 +0800 CST m=+12.014508641
+worker 3 complete reduce 5
+worker 3 crashed at 2023-10-10 15:42:44.019895198 +0800 CST m=+13.015850172
+worker 5 crashed at 2023-10-10 15:42:45.020587445 +0800 CST m=+14.016542419
+worker 6 crashed at 2023-10-10 15:42:45.020689622 +0800 CST m=+14.016644597
+worker 8 crashed at 2023-10-10 15:42:46.02209354 +0800 CST m=+15.018048515
+worker 2 complete reduce 0
+MapDone
+MapDone
+worker 2 complete reduce 6
+MapDone
+worker 2 complete reduce 7
+MapDone
+worker 2 complete reduce 8
+MapDone
+MapDone
+worker 2 crashed at 2023-10-10 15:42:54.029001169 +0800 CST m=+23.024956151
+worker 7 complete reduce 2
+worker 7 crashed at 2023-10-10 15:42:55.030897644 +0800 CST m=+24.026852626
+worker 9 crashed at 2023-10-10 15:42:55.031011989 +0800 CST m=+24.026966975
+worker 10 crashed at 2023-10-10 15:42:55.031031937 +0800 CST m=+24.026986919
+worker 11 crashed at 2023-10-10 15:42:56.031968147 +0800 CST m=+25.027923121
+worker 12 crashed at 2023-10-10 15:42:56.032060178 +0800 CST m=+25.028015153
+worker 13 crashed at 2023-10-10 15:42:56.032077352 +0800 CST m=+25.028032333
+worker 14 crashed at 2023-10-10 15:43:01.53701557 +0800 CST m=+30.532970544
+MapDone
+MapDone
+worker 15 crashed at 2023-10-10 15:43:16.050467933 +0800 CST m=+45.046422915
+worker 16 crashed at 2023-10-10 15:43:16.551330516 +0800 CST m=+45.547285491
+worker 18 crashed at 2023-10-10 15:43:18.053138799 +0800 CST m=+47.049093774
+worker 19 crashed at 2023-10-10 15:43:18.053234792 +0800 CST m=+47.049189775
+worker 21 crashed at 2023-10-10 15:43:19.053845079 +0800 CST m=+48.049800053
+MapDone
+worker 17 complete reduce 9
+MapDone
+ReduceDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+--- crash test: PASS
+*** PASSED ALL TESTS

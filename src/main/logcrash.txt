@@ -1,0 +1,95 @@
+*** Starting crash test.
+new coordinator
+
+
+worker 1 crashed at 2023-10-10 15:35:00.122174975 +0800 CST m=+1.504525198
+worker 2 crashed at 2023-10-10 15:35:00.122290086 +0800 CST m=+1.504640313
+worker 3 crashed at 2023-10-10 15:35:00.122308213 +0800 CST m=+1.504658441
+worker 4 crashed at 2023-10-10 15:35:05.127134463 +0800 CST m=+6.509484695
+worker 6 crashed at 2023-10-10 15:35:06.128327102 +0800 CST m=+7.510677333
+worker 7 crashed at 2023-10-10 15:35:07.12898948 +0800 CST m=+8.511339703
+MapDone
+start Rtask 0 in worker 8 using map in [0 8 5]
+doing Rtask 0 in worker 8 using map in [0 8 5], intermediate is [{c 138885} {c 540174} {c 453168} {c 441033} {c 594262} {c 139054} {c 581863} {c 412665}]
+MapDone
+start Rtask 1 in worker 5 using map in [8 5 0]
+doing Rtask 1 in worker 5 using map in [8 5 0], intermediate is []
+finished Rtask 1 in worker 5 using map in [8 5 0]
+worker 5 complete reduce 1
+MapDone
+start Rtask 2 in worker 5 using map in [0 8 5]
+doing Rtask 2 in worker 5 using map in [0 8 5], intermediate is [{a ../pg-being_ernest.txt} {a ../pg-grimm.txt} {a ../pg-dorian_gray.txt} {a ../pg-frankenstein.txt} {a ../pg-huckleberry_finn.txt} {a ../pg-metamorphosis.txt} {a ../pg-sherlock_holmes.txt} {a ../pg-tom_sawyer.txt}]
+finished Rtask 2 in worker 5 using map in [0 8 5]
+worker 5 complete reduce 2
+MapDone
+start Rtask 3 in worker 5 using map in [0 8 5]
+doing Rtask 3 in worker 5 using map in [0 8 5], intermediate is []
+finished Rtask 3 in worker 5 using map in [0 8 5]
+worker 5 complete reduce 3
+MapDone
+start Rtask 4 in worker 5 using map in [5 0 8]
+doing Rtask 4 in worker 5 using map in [5 0 8], intermediate is []
+finished Rtask 4 in worker 5 using map in [5 0 8]
+worker 5 complete reduce 4
+MapDone
+start Rtask 5 in worker 5 using map in [0 8 5]
+doing Rtask 5 in worker 5 using map in [0 8 5], intermediate is [{d xyzzy} {d xyzzy} {d xyzzy} {d xyzzy} {d xyzzy} {d xyzzy} {d xyzzy} {d xyzzy}]
+MapDone
+start Rtask 6 in worker 0 using map in [0 8 5]
+doing Rtask 6 in worker 0 using map in [0 8 5], intermediate is []
+finished Rtask 6 in worker 0 using map in [0 8 5]
+worker 0 complete reduce 6
+MapDone
+start Rtask 7 in worker 0 using map in [0 8 5]
+doing Rtask 7 in worker 0 using map in [0 8 5], intermediate is []
+finished Rtask 7 in worker 0 using map in [0 8 5]
+worker 0 complete reduce 7
+MapDone
+start Rtask 8 in worker 0 using map in [0 8 5]
+doing Rtask 8 in worker 0 using map in [0 8 5], intermediate is []
+finished Rtask 8 in worker 0 using map in [0 8 5]
+worker 0 complete reduce 8
+MapDone
+start Rtask 9 in worker 0 using map in [0 8 5]
+doing Rtask 9 in worker 0 using map in [0 8 5], intermediate is [{b 22} {b 15} {b 21} {b 22} {b 26} {b 23} {b 25} {b 20}]
+worker 0 crashed at 2023-10-10 15:35:14.635103033 +0800 CST m=+16.017453263
+worker 5 crashed at 2023-10-10 15:35:14.635201033 +0800 CST m=+16.017551256
+worker 9 crashed at 2023-10-10 15:35:15.636083151 +0800 CST m=+17.018433373
+worker 10 crashed at 2023-10-10 15:35:15.636173231 +0800 CST m=+17.018523461
+finished Rtask 0 in worker 8 using map in [0 8 5]
+worker 8 complete reduce 0
+worker 8 crashed at 2023-10-10 15:35:16.63737603 +0800 CST m=+18.019726252
+worker 11 crashed at 2023-10-10 15:35:16.63750419 +0800 CST m=+18.019854412
+worker 12 crashed at 2023-10-10 15:35:16.63753597 +0800 CST m=+18.019886197
+worker 14 crashed at 2023-10-10 15:35:17.638748161 +0800 CST m=+19.021098384
+worker 13 crashed at 2023-10-10 15:35:22.141471386 +0800 CST m=+23.523821609
+worker 17 crashed at 2023-10-10 15:35:25.645671245 +0800 CST m=+27.028021467
+worker 15 crashed at 2023-10-10 15:35:27.646797245 +0800 CST m=+29.029147467
+worker 16 crashed at 2023-10-10 15:35:28.147457104 +0800 CST m=+29.529807326
+worker 20 crashed at 2023-10-10 15:35:34.153003892 +0800 CST m=+35.535354115
+worker 21 crashed at 2023-10-10 15:35:35.154136953 +0800 CST m=+36.536487176
+worker 18 crashed at 2023-10-10 15:35:36.154742853 +0800 CST m=+37.537093076
+worker 23 crashed at 2023-10-10 15:35:37.656158694 +0800 CST m=+39.038508916
+worker 24 crashed at 2023-10-10 15:35:38.656797428 +0800 CST m=+40.039147650
+worker 19 crashed at 2023-10-10 15:35:40.157453685 +0800 CST m=+41.539803917
+worker 25 crashed at 2023-10-10 15:35:44.663287645 +0800 CST m=+46.045637868
+MapDone
+start Rtask 5 in worker 27 using map in [27 26 22]
+doing Rtask 5 in worker 27 using map in [27 26 22], intermediate is [{d xyzzy} {d xyzzy} {d xyzzy} {d xyzzy} {d xyzzy} {d xyzzy} {d xyzzy} {d xyzzy}]
+finished Rtask 5 in worker 27 using map in [27 26 22]
+worker 27 complete reduce 5
+MapDone
+start Rtask 9 in worker 27 using map in [27 26 22]
+doing Rtask 9 in worker 27 using map in [27 26 22], intermediate is [{b 22} {b 26} {b 25} {b 21} {b 15} {b 20} {b 22} {b 23}]
+finished Rtask 9 in worker 27 using map in [27 26 22]
+worker 27 complete reduce 9
+MapDone
+ReduceDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+--- crash test: PASS

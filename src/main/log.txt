@@ -1,0 +1,1055 @@
+8
+*** Starting wc test.
+[{0 ../pg-being_ernest.txt map idle false 0} {1 ../pg-dorian_gray.txt map idle false 0} {2 ../pg-frankenstein.txt map idle false 0} {3 ../pg-grimm.txt map idle false 0} {4 ../pg-huckleberry_finn.txt map idle false 0} {5 ../pg-metamorphosis.txt map idle false 0} {6 ../pg-sherlock_holmes.txt map idle false 0} {7 ../pg-tom_sawyer.txt map idle false 0}]
+reply.Y 198
+reply.Y 198
+task: 0, worker 0 
+class {0 map ../pg-being_ernest.txt []}
+busy
+class map
+filename: ../pg-being_ernest.txt
+task: 1, worker 0 
+class {1 map ../pg-dorian_gray.txt []}
+busy
+class map
+filename: ../pg-dorian_gray.txt
+reply.Y 198
+task: 2, worker 0 
+class {2 map ../pg-frankenstein.txt []}
+busy
+class map
+filename: ../pg-frankenstein.txt
+CompleteTask called
+task: 3, worker 0 
+class {3 map ../pg-grimm.txt []}
+busy
+class map
+filename: ../pg-grimm.txt
+CompleteTask called
+task: 4, worker 0 
+class {4 map ../pg-huckleberry_finn.txt []}
+busy
+class map
+filename: ../pg-huckleberry_finn.txt
+CompleteTask called
+task: 5, worker 0 
+class {5 map ../pg-metamorphosis.txt []}
+busy
+class map
+filename: ../pg-metamorphosis.txt
+CompleteTask called
+task: 6, worker 0 
+class {6 map ../pg-sherlock_holmes.txt []}
+busy
+class map
+filename: ../pg-sherlock_holmes.txt
+CompleteTask called
+task: 7, worker 0 
+class {7 map ../pg-tom_sawyer.txt []}
+busy
+class map
+filename: ../pg-tom_sawyer.txt
+CompleteTask called
+CompleteTask called
+CompleteTask called
+MapDone
+rtask: 0, worker 0 
+class {0 reduce  [91 48 44 49 44 50 93]}
+busy
+processRTask
+[0 1 2]
+CompleteTask called
+MapDone
+rtask: 1, worker 0 
+class {1 reduce  [91 48 44 49 44 50 93]}
+busy
+processRTask
+[0 1 2]
+MapDone
+CompleteTask called
+MapDone
+rtask: 2, worker 0 
+class {2 reduce  [91 48 44 49 44 50 93]}
+busy
+processRTask
+[0 1 2]
+MapDone
+rtask: 3, worker 1 
+class {3 reduce  [91 49 44 50 44 48 93]}
+busy
+processRTask
+[1 2 0]
+MapDone
+rtask: 4, worker 2 
+class {4 reduce  [91 49 44 50 44 48 93]}
+busy
+processRTask
+[1 2 0]
+CompleteTask called
+MapDone
+rtask: 5, worker 1 
+class {5 reduce  [91 48 44 49 44 50 93]}
+busy
+processRTask
+[0 1 2]
+MapDone
+CompleteTask called
+MapDone
+rtask: 6, worker 2 
+class {6 reduce  [91 48 44 49 44 50 93]}
+busy
+processRTask
+[0 1 2]
+CompleteTask called
+MapDone
+rtask: 7, worker 0 
+class {7 reduce  [91 50 44 48 44 49 93]}
+busy
+processRTask
+[2 0 1]
+CompleteTask called
+MapDone
+rtask: 8, worker 1 
+class {8 reduce  [91 49 44 50 44 48 93]}
+busy
+processRTask
+[1 2 0]
+MapDone
+CompleteTask called
+MapDone
+rtask: 9, worker 0 
+class {9 reduce  [91 48 44 49 44 50 93]}
+busy
+processRTask
+[0 1 2]
+CompleteTask called
+MapDone
+CompleteTask called
+MapDone
+CompleteTask called
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+--- wc test: PASS
+8
+*** Starting indexer test.
+[{0 ../pg-being_ernest.txt map idle false 0} {1 ../pg-dorian_gray.txt map idle false 0} {2 ../pg-frankenstein.txt map idle false 0} {3 ../pg-grimm.txt map idle false 0} {4 ../pg-huckleberry_finn.txt map idle false 0} {5 ../pg-metamorphosis.txt map idle false 0} {6 ../pg-sherlock_holmes.txt map idle false 0} {7 ../pg-tom_sawyer.txt map idle false 0}]
+reply.Y 198
+reply.Y 198
+task: 0, worker 0 
+class {0 map ../pg-being_ernest.txt []}
+busy
+class map
+filename: ../pg-being_ernest.txt
+task: 1, worker 0 
+class {1 map ../pg-dorian_gray.txt []}
+busy
+class map
+filename: ../pg-dorian_gray.txt
+CompleteTask called
+task: 2, worker 0 
+class {2 map ../pg-frankenstein.txt []}
+busy
+class map
+filename: ../pg-frankenstein.txt
+CompleteTask called
+task: 3, worker 0 
+class {3 map ../pg-grimm.txt []}
+busy
+class map
+filename: ../pg-grimm.txt
+CompleteTask called
+task: 4, worker 0 
+class {4 map ../pg-huckleberry_finn.txt []}
+busy
+class map
+filename: ../pg-huckleberry_finn.txt
+CompleteTask called
+task: 5, worker 0 
+class {5 map ../pg-metamorphosis.txt []}
+busy
+class map
+filename: ../pg-metamorphosis.txt
+CompleteTask called
+task: 6, worker 0 
+class {6 map ../pg-sherlock_holmes.txt []}
+busy
+class map
+filename: ../pg-sherlock_holmes.txt
+CompleteTask called
+task: 7, worker 0 
+class {7 map ../pg-tom_sawyer.txt []}
+busy
+class map
+filename: ../pg-tom_sawyer.txt
+CompleteTask called
+CompleteTask called
+MapDone
+rtask: 0, worker 0 
+class {0 reduce  [91 49 44 48 93]}
+busy
+processRTask
+[1 0]
+CompleteTask called
+MapDone
+rtask: 1, worker 0 
+class {1 reduce  [91 49 44 48 93]}
+busy
+processRTask
+[1 0]
+CompleteTask called
+MapDone
+rtask: 2, worker 0 
+class {2 reduce  [91 48 44 49 93]}
+busy
+processRTask
+[0 1]
+MapDone
+CompleteTask called
+MapDone
+rtask: 3, worker 0 
+class {3 reduce  [91 49 44 48 93]}
+busy
+processRTask
+[1 0]
+CompleteTask called
+MapDone
+rtask: 4, worker 0 
+class {4 reduce  [91 49 44 48 93]}
+busy
+processRTask
+[1 0]
+CompleteTask called
+MapDone
+rtask: 5, worker 0 
+class {5 reduce  [91 49 44 48 93]}
+busy
+processRTask
+[1 0]
+CompleteTask called
+MapDone
+rtask: 6, worker 0 
+class {6 reduce  [91 49 44 48 93]}
+busy
+processRTask
+[1 0]
+CompleteTask called
+MapDone
+rtask: 7, worker 0 
+class {7 reduce  [91 49 44 48 93]}
+busy
+processRTask
+[1 0]
+CompleteTask called
+MapDone
+rtask: 8, worker 0 
+class {8 reduce  [91 49 44 48 93]}
+busy
+processRTask
+[1 0]
+CompleteTask called
+MapDone
+rtask: 9, worker 0 
+class {9 reduce  [91 48 44 49 93]}
+busy
+processRTask
+[0 1]
+CompleteTask called
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+--- indexer test: PASS
+*** Starting map parallelism test.
+[{0 ../pg-being_ernest.txt map idle false 0} {1 ../pg-dorian_gray.txt map idle false 0} {2 ../pg-frankenstein.txt map idle false 0} {3 ../pg-grimm.txt map idle false 0} {4 ../pg-huckleberry_finn.txt map idle false 0} {5 ../pg-metamorphosis.txt map idle false 0} {6 ../pg-sherlock_holmes.txt map idle false 0} {7 ../pg-tom_sawyer.txt map idle false 0}]
+reply.Y 198
+task: 0, worker 0 
+class {0 map ../pg-being_ernest.txt []}
+busy
+class map
+filename: ../pg-being_ernest.txt
+reply.Y 198
+task: 1, worker 0 
+class {1 map ../pg-dorian_gray.txt []}
+busy
+class map
+filename: ../pg-dorian_gray.txt
+CompleteTask called
+task: 2, worker 0 
+class {2 map ../pg-frankenstein.txt []}
+busy
+class map
+filename: ../pg-frankenstein.txt
+CompleteTask called
+task: 3, worker 0 
+class {3 map ../pg-grimm.txt []}
+busy
+class map
+filename: ../pg-grimm.txt
+CompleteTask called
+task: 4, worker 0 
+class {4 map ../pg-huckleberry_finn.txt []}
+busy
+class map
+filename: ../pg-huckleberry_finn.txt
+CompleteTask called
+task: 5, worker 0 
+class {5 map ../pg-metamorphosis.txt []}
+busy
+class map
+filename: ../pg-metamorphosis.txt
+CompleteTask called
+task: 6, worker 0 
+class {6 map ../pg-sherlock_holmes.txt []}
+busy
+class map
+filename: ../pg-sherlock_holmes.txt
+CompleteTask called
+task: 7, worker 0 
+class {7 map ../pg-tom_sawyer.txt []}
+busy
+class map
+filename: ../pg-tom_sawyer.txt
+CompleteTask called
+CompleteTask called
+MapDone
+rtask: 0, worker 1 
+class {0 reduce  [91 48 44 49 93]}
+busy
+processRTask
+[0 1]
+MapDone
+rtask: 1, worker 0 
+class {1 reduce  [91 48 44 49 93]}
+busy
+processRTask
+[0 1]
+CompleteTask called
+CompleteTask called
+MapDone
+rtask: 2, worker 1 
+MapDone
+class {2 reduce  [91 48 44 49 93]}
+busy
+processRTask
+[0 1]
+rtask: 3, worker 0 
+class {3 reduce  [91 48 44 49 93]}
+busy
+processRTask
+[0 1]
+CompleteTask called
+CompleteTask called
+MapDone
+rtask: 4, worker 1 
+class {4 reduce  [91 48 44 49 93]}
+busy
+processRTask
+[0 1]
+MapDone
+rtask: 5, worker 0 
+class {5 reduce  [91 48 44 49 93]}
+busy
+CompleteTask called
+processRTask
+[0 1]
+CompleteTask called
+MapDone
+rtask: 6, worker 1 
+class {6 reduce  [91 49 44 48 93]}
+busy
+processRTask
+[1 0]
+MapDone
+rtask: 7, worker 0 
+CompleteTask called
+class {7 reduce  [91 48 44 49 93]}
+busy
+processRTask
+[0 1]
+CompleteTask called
+MapDone
+rtask: 8, worker 1 
+class {8 reduce  [91 48 44 49 93]}
+busy
+processRTask
+MapDone
+[0 1]
+rtask: 9, worker 0 
+class {9 reduce  [91 48 44 49 93]}
+busy
+processRTask
+[0 1]
+CompleteTask called
+CompleteTask called
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+--- map parallelism test: PASS
+*** Starting reduce parallelism test.
+[{0 ../pg-being_ernest.txt map idle false 0} {1 ../pg-dorian_gray.txt map idle false 0} {2 ../pg-frankenstein.txt map idle false 0} {3 ../pg-grimm.txt map idle false 0} {4 ../pg-huckleberry_finn.txt map idle false 0} {5 ../pg-metamorphosis.txt map idle false 0} {6 ../pg-sherlock_holmes.txt map idle false 0} {7 ../pg-tom_sawyer.txt map idle false 0}]
+reply.Y 198
+reply.Y 198
+task: 0, worker 0 
+class {0 map ../pg-being_ernest.txt []}
+busy
+class map
+filename: ../pg-being_ernest.txt
+task: 1, worker 0 
+class {1 map ../pg-dorian_gray.txt []}
+busy
+class map
+filename: ../pg-dorian_gray.txt
+CompleteTask called
+task: 2, worker 0 
+class {2 map ../pg-frankenstein.txt []}
+busy
+class map
+filename: ../pg-frankenstein.txt
+CompleteTask called
+task: 3, worker 0 
+class {3 map ../pg-grimm.txt []}
+busy
+class map
+filename: ../pg-grimm.txt
+CompleteTask called
+task: 4, worker 0 
+class {4 map ../pg-huckleberry_finn.txt []}
+busy
+class map
+filename: ../pg-huckleberry_finn.txt
+CompleteTask called
+task: 5, worker 0 
+class {5 map ../pg-metamorphosis.txt []}
+busy
+class map
+filename: ../pg-metamorphosis.txt
+CompleteTask called
+task: 6, worker 0 
+class {6 map ../pg-sherlock_holmes.txt []}
+busy
+class map
+filename: ../pg-sherlock_holmes.txt
+CompleteTask called
+task: 7, worker 0 
+class {7 map ../pg-tom_sawyer.txt []}
+busy
+class map
+filename: ../pg-tom_sawyer.txt
+CompleteTask called
+CompleteTask called
+MapDone
+rtask: 0, worker 0 
+class {0 reduce  [91 48 44 49 93]}
+busy
+processRTask
+[0 1]
+MapDone
+MapDone
+rtask: 1, worker 1 
+class {1 reduce  [91 48 44 49 93]}
+busy
+processRTask
+[0 1]
+CompleteTask called
+MapDone
+rtask: 2, worker 0 
+class {2 reduce  [91 48 44 49 93]}
+busy
+processRTask
+[0 1]
+MapDone
+CompleteTask called
+MapDone
+rtask: 3, worker 1 
+class {3 reduce  [91 48 44 49 93]}
+busy
+processRTask
+[0 1]
+CompleteTask called
+MapDone
+rtask: 4, worker 0 
+class {4 reduce  [91 48 44 49 93]}
+busy
+processRTask
+[0 1]
+MapDone
+MapDone
+CompleteTask called
+MapDone
+rtask: 5, worker 1 
+class {5 reduce  [91 48 44 49 93]}
+busy
+processRTask
+[0 1]
+CompleteTask called
+MapDone
+rtask: 6, worker 0 
+class {6 reduce  [91 48 44 49 93]}
+busy
+processRTask
+[0 1]
+MapDone
+CompleteTask called
+MapDone
+rtask: 7, worker 1 
+class {7 reduce  [91 49 44 48 93]}
+busy
+processRTask
+[1 0]
+CompleteTask called
+MapDone
+rtask: 8, worker 1 
+class {8 reduce  [91 48 44 49 93]}
+busy
+processRTask
+[0 1]
+CompleteTask called
+MapDone
+rtask: 9, worker 1 
+class {9 reduce  [91 48 44 49 93]}
+busy
+processRTask
+[0 1]
+CompleteTask called
+MapDone
+MapDone
+CompleteTask called
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+--- reduce parallelism test: PASS
+*** Starting job count test.
+[{0 ../pg-being_ernest.txt map idle false 0} {1 ../pg-dorian_gray.txt map idle false 0} {2 ../pg-frankenstein.txt map idle false 0} {3 ../pg-grimm.txt map idle false 0} {4 ../pg-huckleberry_finn.txt map idle false 0} {5 ../pg-metamorphosis.txt map idle false 0} {6 ../pg-sherlock_holmes.txt map idle false 0} {7 ../pg-tom_sawyer.txt map idle false 0}]
+reply.Y 198
+task: 0, worker 0 
+class {0 map ../pg-being_ernest.txt []}
+busy
+reply.Y 198
+class map
+filename: ../pg-being_ernest.txt
+task: 1, worker 0 
+class {1 map ../pg-dorian_gray.txt []}
+busy
+class map
+filename: ../pg-dorian_gray.txt
+CompleteTask called
+task: 2, worker 0 
+class {2 map ../pg-frankenstein.txt []}
+busy
+class map
+filename: ../pg-frankenstein.txt
+CompleteTask called
+task: 3, worker 0 
+class {3 map ../pg-grimm.txt []}
+busy
+class map
+filename: ../pg-grimm.txt
+CompleteTask called
+task: 4, worker 0 
+class {4 map ../pg-huckleberry_finn.txt []}
+busy
+class map
+filename: ../pg-huckleberry_finn.txt
+CompleteTask called
+task: 5, worker 0 
+class {5 map ../pg-metamorphosis.txt []}
+busy
+class map
+filename: ../pg-metamorphosis.txt
+CompleteTask called
+task: 6, worker 0 
+class {6 map ../pg-sherlock_holmes.txt []}
+busy
+class map
+filename: ../pg-sherlock_holmes.txt
+CompleteTask called
+task: 7, worker 0 
+class {7 map ../pg-tom_sawyer.txt []}
+busy
+class map
+filename: ../pg-tom_sawyer.txt
+CompleteTask called
+CompleteTask called
+MapDone
+rtask: 0, worker 1 
+class {0 reduce  [91 48 44 49 93]}
+busy
+processRTask
+[0 1]
+CompleteTask called
+MapDone
+rtask: 1, worker 1 
+class {1 reduce  [91 48 44 49 93]}
+busy
+processRTask
+[0 1]
+CompleteTask called
+MapDone
+rtask: 2, worker 1 
+class {2 reduce  [91 48 44 49 93]}
+busy
+processRTask
+[0 1]
+CompleteTask called
+MapDone
+rtask: 3, worker 1 
+class {3 reduce  [91 48 44 49 93]}
+busy
+processRTask
+[0 1]
+CompleteTask called
+MapDone
+rtask: 4, worker 1 
+class {4 reduce  [91 48 44 49 93]}
+busy
+processRTask
+[0 1]
+CompleteTask called
+MapDone
+rtask: 5, worker 1 
+class {5 reduce  [91 48 44 49 93]}
+busy
+processRTask
+[0 1]
+CompleteTask called
+MapDone
+rtask: 6, worker 1 
+class {6 reduce  [91 48 44 49 93]}
+busy
+processRTask
+[0 1]
+CompleteTask called
+MapDone
+rtask: 7, worker 1 
+class {7 reduce  [91 48 44 49 93]}
+busy
+processRTask
+[0 1]
+CompleteTask called
+MapDone
+rtask: 8, worker 1 
+class {8 reduce  [91 48 44 49 93]}
+busy
+processRTask
+[0 1]
+CompleteTask called
+MapDone
+rtask: 9, worker 1 
+class {9 reduce  [91 48 44 49 93]}
+busy
+processRTask
+[0 1]
+CompleteTask called
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+--- job count test: PASS
+*** Starting early exit test.
+[{0 ../pg-being_ernest.txt map idle false 0} {1 ../pg-dorian_gray.txt map idle false 0} {2 ../pg-frankenstein.txt map idle false 0} {3 ../pg-grimm.txt map idle false 0} {4 ../pg-huckleberry_finn.txt map idle false 0} {5 ../pg-metamorphosis.txt map idle false 0} {6 ../pg-sherlock_holmes.txt map idle false 0} {7 ../pg-tom_sawyer.txt map idle false 0}]
+reply.Y 198
+reply.Y 198
+task: 0, worker 0 
+class {0 map ../pg-being_ernest.txt []}
+busy
+class map
+filename: ../pg-being_ernest.txt
+reply.Y 198
+task: 1, worker 0 
+task: 2, worker 0 
+class {2 map ../pg-frankenstein.txt []}
+class {1 map ../pg-dorian_gray.txt []}
+busy
+busy
+class map
+filename: ../pg-frankenstein.txt
+CompleteTask called
+class map
+filename: ../pg-dorian_gray.txt
+task: 3, worker 0 
+class {3 map ../pg-grimm.txt []}
+busy
+class map
+filename: ../pg-grimm.txt
+CompleteTask called
+task: 4, worker 0 
+class {4 map ../pg-huckleberry_finn.txt []}
+busy
+class map
+filename: ../pg-huckleberry_finn.txt
+CompleteTask called
+task: 5, worker 0 
+class {5 map ../pg-metamorphosis.txt []}
+busy
+class map
+filename: ../pg-metamorphosis.txt
+CompleteTask called
+task: 6, worker 0 
+class {6 map ../pg-sherlock_holmes.txt []}
+busy
+class map
+filename: ../pg-sherlock_holmes.txt
+CompleteTask called
+task: 7, worker 0 
+class {7 map ../pg-tom_sawyer.txt []}
+busy
+class map
+filename: ../pg-tom_sawyer.txt
+CompleteTask called
+CompleteTask called
+CompleteTask called
+MapDone
+rtask: 0, worker 1 
+class {0 reduce  [91 48 44 50 44 49 93]}
+busy
+processRTask
+[0 2 1]
+CompleteTask called
+MapDone
+rtask: 1, worker 1 
+class {1 reduce  [91 48 44 50 44 49 93]}
+busy
+processRTask
+[0 2 1]
+CompleteTask called
+MapDone
+rtask: 2, worker 1 
+class {2 reduce  [91 48 44 50 44 49 93]}
+busy
+processRTask
+[0 2 1]
+MapDone
+MapDone
+rtask: 3, worker 0 
+class {3 reduce  [91 49 44 48 44 50 93]}
+busy
+processRTask
+[1 0 2]
+CompleteTask called
+MapDone
+rtask: 4, worker 0 
+class {4 reduce  [91 48 44 50 44 49 93]}
+busy
+processRTask
+[0 2 1]
+CompleteTask called
+MapDone
+rtask: 5, worker 0 
+class {5 reduce  [91 48 44 50 44 49 93]}
+busy
+processRTask
+[0 2 1]
+CompleteTask called
+MapDone
+rtask: 6, worker 0 
+class {6 reduce  [91 48 44 50 44 49 93]}
+busy
+processRTask
+[0 2 1]
+MapDone
+rtask: 7, worker 2 
+class {7 reduce  [91 48 44 50 44 49 93]}
+busy
+processRTask
+[0 2 1]
+CompleteTask called
+MapDone
+rtask: 8, worker 2 
+class {8 reduce  [91 48 44 50 44 49 93]}
+busy
+processRTask
+[0 2 1]
+CompleteTask called
+MapDone
+rtask: 9, worker 2 
+class {9 reduce  [91 48 44 50 44 49 93]}
+busy
+processRTask
+[0 2 1]
+CompleteTask called
+MapDone
+MapDone
+MapDone
+MapDone
+CompleteTask called
+MapDone
+MapDone
+MapDone
+CompleteTask called
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+--- early exit test: PASS
+*** Starting crash test.
+8
+[{0 ../pg-being_ernest.txt map idle false 0} {1 ../pg-dorian_gray.txt map idle false 0} {2 ../pg-frankenstein.txt map idle false 0} {3 ../pg-grimm.txt map idle false 0} {4 ../pg-huckleberry_finn.txt map idle false 0} {5 ../pg-metamorphosis.txt map idle false 0} {6 ../pg-sherlock_holmes.txt map idle false 0} {7 ../pg-tom_sawyer.txt map idle false 0}]
+reply.Y 198
+task: 0, worker 0 
+class {0 map ../pg-being_ernest.txt []}
+busy
+class map
+filename: ../pg-being_ernest.txt
+reply.Y 198
+task: 1, worker 0 
+class {1 map ../pg-dorian_gray.txt []}
+busy
+class map
+filename: ../pg-dorian_gray.txt
+reply.Y 198
+task: 2, worker 0 
+CompleteTask called
+class {2 map ../pg-frankenstein.txt []}
+busy
+class map
+filename: ../pg-frankenstein.txt
+task: 3, worker 0 
+class {3 map ../pg-grimm.txt []}
+busy
+class map
+filename: ../pg-grimm.txt
+reply.Y 198
+task: 4, worker 0 
+class {4 map ../pg-huckleberry_finn.txt []}
+busy
+class map
+filename: ../pg-huckleberry_finn.txt
+timegap: 486.350298ms
+worker 1 crashed
+timegap: 472.420729ms
+worker 3 crashed
+reply.Y 198
+reply.Y 198
+task: 1, worker 1 
+task: 3, worker 1 
+class {3 map ../pg-grimm.txt []}
+class {1 map ../pg-dorian_gray.txt []}
+busy
+class map
+filename: ../pg-dorian_gray.txt
+busy
+class map
+filename: ../pg-grimm.txt
+CompleteTask called
+CompleteTask called
+task: 4, worker 3 
+task: 5, worker 0 
+class {4 map ../pg-huckleberry_finn.txt []}
+busy
+class map
+filename: ../pg-huckleberry_finn.txt
+class {5 map ../pg-metamorphosis.txt []}
+busy
+class map
+filename: ../pg-metamorphosis.txt
+CompleteTask called
+task: 6, worker 0 
+class {6 map ../pg-sherlock_holmes.txt []}
+busy
+class map
+filename: ../pg-sherlock_holmes.txt
+CompleteTask called
+task: 7, worker 0 
+class {7 map ../pg-tom_sawyer.txt []}
+busy
+class map
+filename: ../pg-tom_sawyer.txt
+timegap: 447.146284ms
+worker 4 crashed
+timegap: 446.360172ms
+worker 5 crashed
+reply.Y 198
+task: 1, worker 5 
+class {1 map ../pg-dorian_gray.txt []}
+busy
+class map
+filename: ../pg-dorian_gray.txt
+reply.Y 198
+task: 3, worker 4 
+class {3 map ../pg-grimm.txt []}
+busy
+class map
+filename: ../pg-grimm.txt
+CompleteTask called
+task: 4, worker 5 
+class {4 map ../pg-huckleberry_finn.txt []}
+busy
+class map
+filename: ../pg-huckleberry_finn.txt
+CompleteTask called
+task: 5, worker 4 
+class {5 map ../pg-metamorphosis.txt []}
+busy
+class map
+filename: ../pg-metamorphosis.txt
+CompleteTask called
+task: 6, worker 4 
+class {6 map ../pg-sherlock_holmes.txt []}
+busy
+class map
+filename: ../pg-sherlock_holmes.txt
+CompleteTask called
+CompleteTask called
+CompleteTask called
+CompleteTask called
+MapDone
+rtask: 0, worker 7 
+class {0 reduce  [91 48 44 54 44 50 44 55 93]}
+busy
+processRTask
+[0 6 2 7]
+CompleteTask called
+MapDone
+rtask: 1, worker 7 
+class {1 reduce  [91 48 44 54 44 50 44 55 93]}
+busy
+processRTask
+[0 6 2 7]
+CompleteTask called
+MapDone
+rtask: 2, worker 7 
+class {2 reduce  [91 50 44 55 44 48 44 54 93]}
+busy
+processRTask
+[2 7 0 6]
+MapDone
+rtask: 3, worker 0 
+class {3 reduce  [91 48 44 54 44 50 44 55 93]}
+busy
+processRTask
+[0 6 2 7]
+CompleteTask called
+MapDone
+rtask: 4, worker 0 
+class {4 reduce  [91 48 44 54 44 50 44 55 93]}
+busy
+processRTask
+[0 6 2 7]
+CompleteTask called
+MapDone
+rtask: 5, worker 0 
+class {5 reduce  [91 48 44 54 44 50 44 55 93]}
+busy
+processRTask
+[0 6 2 7]
+MapDone
+rtask: 6, worker 6 
+class {6 reduce  [91 48 44 54 44 50 44 55 93]}
+busy
+processRTask
+[0 6 2 7]
+CompleteTask called
+MapDone
+rtask: 7, worker 6 
+class {7 reduce  [91 48 44 54 44 50 44 55 93]}
+busy
+processRTask
+[0 6 2 7]
+CompleteTask called
+MapDone
+rtask: 8, worker 6 
+class {8 reduce  [91 48 44 54 44 50 44 55 93]}
+busy
+processRTask
+[0 6 2 7]
+CompleteTask called
+MapDone
+rtask: 9, worker 6 
+class {9 reduce  [91 48 44 54 44 50 44 55 93]}
+busy
+processRTask
+[0 6 2 7]
+MapDone
+MapDone
+MapDone
+MapDone
+MapDone
+MapDone
+MapDone
+CompleteTask called
+MapDone
+MapDone
+MapDone
+MapDone
+MapDone
+MapDone
+MapDone
+MapDone
+MapDone
+MapDone
+MapDone
+MapDone
+MapDone
+MapDone
+CompleteTask called
+MapDone
+MapDone
+MapDone
+MapDone
+MapDone
+MapDone
+MapDone
+MapDone
+CompleteTask called
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+MapDone
+ReduceDone
+--- crash test: PASS
+*** PASSED ALL TESTS

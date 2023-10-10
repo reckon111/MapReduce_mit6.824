@@ -35,8 +35,10 @@ func main() {
 	// pass it to Map,
 	// accumulate the intermediate Map output.
 	//
+	// cnt := 0;
 	intermediate := []mr.KeyValue{}
 	for _, filename := range os.Args[2:] {
+		// cnt++
 		file, err := os.Open(filename)
 		if err != nil {
 			log.Fatalf("cannot open %v", filename)
@@ -49,7 +51,7 @@ func main() {
 		kva := mapf(filename, string(content))
 		intermediate = append(intermediate, kva...)
 	}
-
+	// fmt.Printf("%d\n", cnt)
 	//
 	// a big difference from real MapReduce is that all the
 	// intermediate data is in one place, intermediate[],
