@@ -24,8 +24,22 @@ import (
 
 //	"6.824/labgob"
 	"6.824/labrpc"
+	
+	"time"
+	"math/rand"
+	// "fmt"
+	"log"
 )
 
+func init() {
+	log.SetFlags(log.Lmicroseconds)
+}
+
+const (
+	sendHeartbeatTime =  150 * time.Millisecond
+	left = 400
+	right = 800
+)
 
 //
 // as each Raft peer becomes aware that successive log entries are
@@ -64,6 +78,13 @@ type Raft struct {
 	// Look at the paper's Figure 2 for a description of what
 	// state a Raft server must maintain.
 
+	status string // raft 服务器的状态：leader, follower, candidate
+	currentTerm int
+	votedFor int 
+	votedTerm int
+	lastTime time.Time
+	electionTime time.Duration
+
 }
 
 // return currentTerm and whether this server
@@ -73,6 +94,13 @@ func (rf *Raft) GetState() (int, bool) {
 	var term int
 	var isleader bool
 	// Your code here (2A).
+	rf.mu.Lock()
+	defer rf.mu.Unlock()
+	term = rf.currentTerm;
+	if rf.status == "leader" {
+		isleader = true;
+	}
+
 	return term, isleader
 }
 
@@ -143,6 +171,10 @@ func (rf *Raft) Snapshot(index int, snapshot []byte) {
 //
 type RequestVoteArgs struct {
 	// Your data here (2A, 2B).
+	Term int 
+	CandidateId int
+	LastLogIndex int
+	LastLogTerm int 
 }
 
 //
@@ -151,6 +183,8 @@ type RequestVoteArgs struct {
 //
 type RequestVoteReply struct {
 	// Your data here (2A).
+	Term int 
+	VoteGranted bool 
 }
 
 //
@@ -158,6 +192,29 @@ type RequestVoteReply struct {
 //
 func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 	// Your code here (2A, 2B).
+	rf.mu.Lock()
+	defer rf.mu.Unlock()
+	reply.Term = rf.currentTerm
+
+	if args.Term < rf.currentTerm { // candidate落后, 不投票
+		reply.VoteGranted = false
+	} else if args.Term > rf.currentTerm { // candidate领先，投票
+		rf.currentTerm = args.Term
+		rf.votedTerm = args.Term
+		reply.VoteGranted = true
+		rf.votedFor = args.CandidateId
+		rf.lastTime = time.Now()
+		rf.status = "follower"
+	} else {
+		if rf.votedTerm < args.Term { // 此server和candidate同一任期，且未投过票，投票
+			reply.VoteGranted = true
+			rf.votedTerm = args.Term
+			rf.lastTime = time.Now()
+			rf.status = "follower"
+		} else {
+			reply.VoteGranted = false // 已投票给其他人
+		}
+	}
 }
 
 //
@@ -194,6 +251,41 @@ func (rf *Raft) sendRequestVote(server int, args *RequestVoteArgs, reply *Reques
 	return ok
 }
 
+
+type AppendEntriesArgs struct {
+	// Your data here (2A, 2B).
+	Term int 
+	LeaderId int
+}
+
+type AppendEntriesReply struct {
+	// Your data here (2A).
+	Term int 
+	Success bool 
+}
+
+func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply) {
+	rf.mu.Lock()
+	defer rf.mu.Unlock()
+	reply.Term = rf.currentTerm
+	if args.Term > rf.currentTerm { // leader 任期领先
+		rf.currentTerm = args.Term
+		rf.lastTime = time.Now()
+		rf.status = "follower"
+		reply.Success = true
+	} else if args.Term == rf.currentTerm { // leader 任期和此server同一任期
+		rf.lastTime = time.Now()
+		rf.status = "follower"
+		reply.Success = true
+	} else {					// leader 任期落后
+		reply.Success = false
+	}
+}
+
+func (rf *Raft) sendAppendEntries(server int, args *AppendEntriesArgs, reply *AppendEntriesReply) bool {
+	ok := rf.peers[server].Call("Raft.AppendEntries", args, reply)
+	return ok
+}
 
 //
 // the service using Raft (e.g. a k/v server) wants to start
@@ -249,7 +341,166 @@ func (rf *Raft) ticker() {
 		// Your code here to check if a leader election should
 		// be started and to randomize sleeping time using
 		// time.Sleep().
+		if rf.atomicReadStatus() == "candidate" { // 变为candidate, 开启选举
+			// 加锁保护
+			rf.mu.Lock()
+			rf.currentTerm++
 
+			rf.votedFor = rf.me
+			rf.votedTerm = rf.currentTerm
+			rf.lastTime = time.Now()
+			rf.electionTime = getRandomizedElecionTime()
+			total := len(rf.peers)
+			term := rf.currentTerm
+			// log.Printf("server id %d, status: %s , 任期 %d, 开始选举\n",rf.me, rf.status, rf.currentTerm)
+			rf.mu.Unlock()
+
+			// log.Printf("server id %d, status: %s 选举中, 已完成%d \n",rf.me, rf.status, finished)
+			
+			args := RequestVoteArgs{
+					Term: term,
+					CandidateId: rf.me,
+				}
+			majority := total / 2 + 1
+			count := 1
+			finished := 1
+			cond := sync.NewCond(&rf.mu)
+			
+			// log.Printf("server id %d, status: %s 选举中, 已完成%d \n",rf.me, rf.status, finished)
+			for i := 0; i < total; i++ {
+				if rf.atomicReadStatus() != "candidate" {
+					break;
+				}
+				if i != rf.me {
+					go func(server int) {
+						reply := RequestVoteReply{}
+						if rf.sendRequestVote(server, &args, &reply) {
+							rf.mu.Lock()
+							if reply.Term > rf.currentTerm {			// 变为follower
+								rf.currentTerm = reply.Term
+								rf.lastTime = time.Now()
+								rf.status = "follower"
+							} else {
+								if reply.VoteGranted {
+									count++;
+								}
+							}
+							rf.mu.Unlock()
+						}
+						rf.mu.Lock()
+						finished++
+						// log.Printf("server id %d, status: %s, 任期: %d 选举中, 以获得 %d 票， 已完成 %d \n",rf.me, rf.status, rf.currentTerm, count, finished)
+						cond.Broadcast()
+						rf.mu.Unlock()
+					}(i)
+				}
+			}
+
+			rf.mu.Lock()
+			for rf.status == "candidate" && count < majority && finished != total { // 满足条件一直阻塞
+				cond.Wait()
+			}
+
+			if rf.status == "candidate" && count >= majority  {
+				rf.status = "leader"
+			}
+			lastTime := rf.lastTime
+			status := rf.status
+			rf.mu.Unlock()
+			
+			// 没有结果，等待选举时间过去，又开始选举
+			if status == "candidate" { 
+				time.Sleep(rf.electionTime - time.Now().Sub(lastTime))
+				// log.Printf("server id %d, status: %s , 任期 %d, 准备下一轮选举\n",rf.me, rf.status, rf.currentTerm)
+			}
+		}
+	}
+}
+
+func (rf *Raft) checkState() {
+	for rf.killed() == false {	
+		rf.mu.Lock()
+		if rf.status == "follower" && time.Now().Sub(rf.lastTime) > rf.electionTime {
+			// log.Printf("server id %d, status: %s, 任期: %d, 超时时间 %v\n",rf.me, rf.status, rf.currentTerm, time.Now().Sub(rf.lastTime))
+			rf.status = "candidate"
+		}
+		sleeptTime := rf.electionTime / 2;
+		// if rf.status != "follower" {
+		// log.Printf("server id %d, status: %s\n",rf.me, rf.status)
+		
+		rf.mu.Unlock()
+		time.Sleep(sleeptTime)
+	}
+}
+
+func (rf *Raft) atomicReadStatus() string{
+	rf.mu.Lock()
+	defer rf.mu.Unlock()
+	return rf.status
+}
+
+func (rf *Raft) leader() {
+	for rf.killed() == false {
+		if rf.atomicReadStatus() == "leader" {
+			// 加锁保护
+			rf.mu.Lock()
+			total := len(rf.peers)
+			term := rf.currentTerm
+			// log.Printf("server id %d, status: %s, 任期: %d, 正在发送心跳包 \n", rf.me, rf.status, rf.currentTerm)
+			rf.mu.Unlock()
+			
+
+			args := AppendEntriesArgs{
+					Term: term,
+					LeaderId: rf.me,
+				}
+			majority := total / 2 + 1
+			aliveMachines := 1
+			finished := 1
+			cond := sync.NewCond(&rf.mu)
+
+			for i := 0; i < total; i++ {
+				if rf.atomicReadStatus() != "leader" {
+					break;
+				}
+				
+				if i != rf.me {
+					go func(server int) {
+						reply := AppendEntriesReply{}
+
+						if rf.status == "leader" && rf.sendAppendEntries(server, &args, &reply) {
+							rf.mu.Lock()
+							if reply.Term > rf.currentTerm {			// 变为follower
+								rf.currentTerm = reply.Term
+								rf.lastTime = time.Now()
+								rf.status = "follower"
+							}
+							aliveMachines++
+							rf.mu.Unlock()
+						}
+						rf.mu.Lock()
+						finished++
+						cond.Broadcast()
+						rf.mu.Unlock()
+					}(i)
+				}
+			}
+
+			// flag := false
+			rf.mu.Lock()
+			for rf.status == "leader" && aliveMachines < majority && finished != total { // 满足所有条件一直阻塞
+				cond.Wait()
+			}
+			// log.Printf("server id %d, status: %s, 任期: %d, aliveMachines: %d \n", rf.me, rf.status, rf.currentTerm, aliveMachines)
+			
+			status := rf.status;
+			rf.mu.Unlock()
+
+			if status == "leader" {
+				time.Sleep(sendHeartbeatTime)
+			}
+		}
+		
 	}
 }
 
@@ -271,14 +522,26 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	rf.persister = persister
 	rf.me = me
 
+	rand.Seed(time.Now().UnixNano())
 	// Your initialization code here (2A, 2B, 2C).
-
+	rf.status = "follower"
+	rf.currentTerm = 0
+	rf.votedTerm = 0
+	rf.lastTime = time.Now()
+	rf.electionTime = getRandomizedElecionTime()
 	// initialize from state persisted before a crash
 	rf.readPersist(persister.ReadRaftState())
-
+	
+	// log.Println("inital raft sever")
 	// start ticker goroutine to start elections
 	go rf.ticker()
-
+	go rf.checkState()
+	go rf.leader()
 
 	return rf
+}
+
+
+func getRandomizedElecionTime() time.Duration {
+	return time.Duration(rand.Intn(right-left) + left) * time.Millisecond
 }

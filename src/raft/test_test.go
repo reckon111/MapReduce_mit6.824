@@ -15,6 +15,7 @@ import "math/rand"
 import "sync/atomic"
 import "sync"
 
+import "log" // 修改
 // The tester generously allows solutions to complete elections in one second
 // (much more than the paper's range of timeouts).
 const RaftElectionTimeout = 1000 * time.Millisecond
@@ -59,24 +60,31 @@ func TestReElection2A(t *testing.T) {
 
 	leader1 := cfg.checkOneLeader()
 
+	
 	// if the leader disconnects, a new one should be elected.
 	cfg.disconnect(leader1)
+	log.Println("断开第一任leader")
 	cfg.checkOneLeader()
 
 	// if the old leader rejoins, that shouldn't
 	// disturb the new leader.
+	fmt.Println("<<<<重新连上第一任leader")
 	cfg.connect(leader1)
+	fmt.Println("重新连上第一任leader之后>>>")
 	leader2 := cfg.checkOneLeader()
 
 	// if there's no quorum, no leader should
 	// be elected.
 	cfg.disconnect(leader2)
+	fmt.Println("断开第二任leader")
 	cfg.disconnect((leader2 + 1) % servers)
+	fmt.Println("断开任意一个follower, 之后不能选举")
 	time.Sleep(2 * RaftElectionTimeout)
 	cfg.checkNoLeader()
 
 	// if a quorum arises, it should elect a leader.
 	cfg.connect((leader2 + 1) % servers)
+	fmt.Println("再次连上任意一个, 之后可以选举")
 	cfg.checkOneLeader()
 
 	// re-join of last node shouldn't prevent leader from existing.
