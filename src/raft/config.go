@@ -139,6 +139,7 @@ func (cfg *config) checkLogs(i int, m ApplyMsg) (string, bool) {
 	for j := 0; j < len(cfg.logs); j++ {
 		if old, oldok := cfg.logs[j][m.CommandIndex]; oldok && old != v {
 			log.Printf("%v: log %v; server %v\n", i, cfg.logs[i], cfg.logs[j])
+			log.Printf("old %v %T, new %v %T, %v\n ", old, old, v, v,old == v)
 			// some server has already committed a different value for this entry!
 			err_msg = fmt.Sprintf("commit index=%v server=%v %v != server=%v %v",
 				m.CommandIndex, i, m.Command, j, old)
@@ -430,19 +431,20 @@ func (cfg *config) checkNoLeader() {
 }
 
 // how many servers think a log entry is committed?
-func (cfg *config) nCommitted(index int) (int, interface{}) {
+func (cfg *config) nCommitted(index int) (int, interface{}) { // 索引处的命令有多少节点提交了,返回提交的节点数量和命令
 	count := 0
 	var cmd interface{} = nil
 	for i := 0; i < len(cfg.rafts); i++ {
 		if cfg.applyErr[i] != "" {
 			cfg.t.Fatal(cfg.applyErr[i])
 		}
-
 		cfg.mu.Lock()
 		cmd1, ok := cfg.logs[i][index]
+		// fmt.Printf("in nComitted: serverid %d logs %v\n", i, cfg.logs[i])
 		cfg.mu.Unlock()
 
 		if ok {
+			// fmt.Printf("in nComitted c\n")
 			if count > 0 && cmd != cmd1 {
 				cfg.t.Fatalf("committed values do not match: index %v, %v, %v\n",
 					index, cmd, cmd1)
@@ -500,9 +502,12 @@ func (cfg *config) wait(index int, n int, startTerm int) interface{} {
 func (cfg *config) one(cmd interface{}, expectedServers int, retry bool) int {
 	t0 := time.Now()
 	starts := 0
+	// cnt := 0
 	for time.Since(t0).Seconds() < 10 {
 		// try all the servers, maybe one is the leader.
+		// 10秒内先找到leader, 再追加cmd
 		index := -1
+
 		for si := 0; si < cfg.n; si++ {
 			starts = (starts + 1) % cfg.n
 			var rf *Raft
@@ -514,19 +519,25 @@ func (cfg *config) one(cmd interface{}, expectedServers int, retry bool) int {
 			if rf != nil {
 				index1, _, ok := rf.Start(cmd)
 				if ok {
+					// fmt.Printf("追加命令索引为: %d\n", index1)
 					index = index1
 					break
 				}
 			}
 		}
-
 		if index != -1 {
 			// somebody claimed to be the leader and to have
 			// submitted our command; wait a while for agreement.
+			// 两秒内对追加的命令达成共识, 成功返回,失败输出未达成共识
+			// fmt.Printf("追加命令时找到leader了\n")
 			t1 := time.Now()
+			var errcmd interface{}
 			for time.Since(t1).Seconds() < 2 {
 				nd, cmd1 := cfg.nCommitted(index)
+				errcmd = cmd1
+				// fmt.Printf("%d 个server 同意了\n", nd)
 				if nd > 0 && nd >= expectedServers {
+					// fmt.Printf("%d 个server 同意了\n", nd)
 					// committed
 					if cmd1 == cmd {
 						// and it was the command we submitted.
@@ -536,13 +547,14 @@ func (cfg *config) one(cmd interface{}, expectedServers int, retry bool) int {
 				time.Sleep(20 * time.Millisecond)
 			}
 			if retry == false {
+				fmt.Printf("错误命令为: %v\n",errcmd)
 				cfg.t.Fatalf("one(%v) failed to reach agreement", cmd)
 			}
 		} else {
 			time.Sleep(50 * time.Millisecond)
 		}
 	}
-	cfg.t.Fatalf("one(%v) failed to reach agreement", cmd)
+	cfg.t.Fatalf("one(%v) failed to reach agreement, 超时", cmd)
 	return -1
 }
 

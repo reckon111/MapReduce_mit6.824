@@ -29,6 +29,9 @@ import (
 	"math/rand"
 	// "fmt"
 	"log"
+
+	"bytes"
+	"encoding/gob"
 )
 
 func init() {
@@ -36,7 +39,7 @@ func init() {
 }
 
 const (
-	sendHeartbeatTime =  150 * time.Millisecond
+	sendHeartbeatTime =  200 * time.Millisecond
 	left = 400
 	right = 800
 )
@@ -64,6 +67,12 @@ type ApplyMsg struct {
 	SnapshotIndex int
 }
 
+// 要序列化的结构体域都要大写字母开头,否则序列化时将被忽略
+type Entry struct {
+	Term int 
+	Command      interface{}
+}
+
 //
 // A Go object implementing a single Raft peer.
 //
@@ -82,9 +91,20 @@ type Raft struct {
 	currentTerm int
 	votedFor int 
 	votedTerm int
+	log []Entry
+	
 	lastTime time.Time
 	electionTime time.Duration
 
+	commitIndex int 
+	lastApplied int 
+
+	nextIndex []int
+	matchIndex []int
+	leaderId int
+
+	newCommitIndex chan int
+	applyCh chan ApplyMsg
 }
 
 // return currentTerm and whether this server
@@ -196,25 +216,31 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 	defer rf.mu.Unlock()
 	reply.Term = rf.currentTerm
 
-	if args.Term < rf.currentTerm { // candidate落后, 不投票
+	if args.Term < rf.currentTerm { // candidate 任期落后，不可能投票
 		reply.VoteGranted = false
-	} else if args.Term > rf.currentTerm { // candidate领先，投票
+	} else if args.Term >= rf.currentTerm { // candidate 任期不落后，可能投票
 		rf.currentTerm = args.Term
-		rf.votedTerm = args.Term
-		reply.VoteGranted = true
-		rf.votedFor = args.CandidateId
-		rf.lastTime = time.Now()
-		rf.status = "follower"
-	} else {
-		if rf.votedTerm < args.Term { // 此server和candidate同一任期，且未投过票，投票
-			reply.VoteGranted = true
-			rf.votedTerm = args.Term
-			rf.lastTime = time.Now()
-			rf.status = "follower"
-		} else {
-			reply.VoteGranted = false // 已投票给其他人
+		if rf.isAdvanceThanCandidate(args.LastLogTerm, args.LastLogIndex) {	// candidate日志落后, 不投票
+			reply.VoteGranted = false
+		}	else {			// candidate日志不落后, 可能投票
+			if rf.votedTerm < args.Term { // 此server在这轮任期中未投过票，投票
+				reply.VoteGranted = true
+				rf.votedTerm = args.Term
+				rf.votedFor = args.CandidateId
+				rf.lastTime = time.Now()
+				rf.status = "follower"
+			} else {
+				reply.VoteGranted = false // 已投票给其他人
+			}
 		}
 	}
+}
+
+func (rf *Raft) isAdvanceThanCandidate(LastLogTerm int, LastLogIndex int) bool {
+	tail := len(rf.log) - 1
+	if rf.log[tail].Term > LastLogTerm { return true }
+	if rf.log[tail].Term < LastLogTerm { return false }
+	return tail > LastLogIndex
 }
 
 //
@@ -256,6 +282,10 @@ type AppendEntriesArgs struct {
 	// Your data here (2A, 2B).
 	Term int 
 	LeaderId int
+	PrevLogIndex int
+	PrevLogTerm int
+	Entries []byte
+	LeaderCommit int
 }
 
 type AppendEntriesReply struct {
@@ -264,21 +294,52 @@ type AppendEntriesReply struct {
 	Success bool 
 }
 
+func (rf *Raft) isMatchPrevLog(PrevLogIndex int, PrevLogTerm int) bool {
+	if PrevLogIndex >= len(rf.log) { return false }
+	if rf.log[PrevLogIndex].Term != PrevLogTerm 	{  // 删除所有和leader不匹配的日志
+		rf.log = rf.log[:PrevLogIndex]
+		return false 
+	}
+	return true
+}
+
 func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply) {
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
-	reply.Term = rf.currentTerm
-	if args.Term > rf.currentTerm { // leader 任期领先
-		rf.currentTerm = args.Term
-		rf.lastTime = time.Now()
-		rf.status = "follower"
-		reply.Success = true
-	} else if args.Term == rf.currentTerm { // leader 任期和此server同一任期
-		rf.lastTime = time.Now()
-		rf.status = "follower"
-		reply.Success = true
-	} else {					// leader 任期落后
+	reply.Term = rf.currentTerm  // 
+	reply.Success = false 
+
+	if rf.currentTerm > args.Term {  // Reply false if term < currentTerm(5.1)
+		log.Printf("server %d 收到任期落后于自己的 leader %d \n", rf.me, args.LeaderId)
+		return 
+	}
+	
+	// leader 任期领先 或和server同一任期
+	rf.currentTerm = args.Term
+	rf.lastTime = time.Now()
+	rf.status = "follower"
+
+	if !rf.isMatchPrevLog(args.PrevLogIndex, args.PrevLogTerm) { // 存在发送过来的日志不匹配问题
+		log.Printf("server %d 存在日志不匹配问题 leader %d\n", rf.me, args.LeaderId)
 		reply.Success = false
+	} else {
+		// 反序列化数据
+		restoredEntries := d_serialEntries(args.Entries)
+
+		// log.Printf("节点 %d, 接收到的日志为 %v\n", rf.me, newEntries)
+		if restoredEntries != nil { // 发送过来的不是心跳包
+			// log.Printf("节点 %d, 接收到的非空日志为 %v\n", rf.me, restoredEntries)
+			rf.log = append(rf.log[:args.PrevLogIndex+1], restoredEntries...)
+			// log.Printf("成功同步日志, 节点 %d, 当前日志为 %v\n", rf.me, rf.log)
+		} 
+		if min(args.LeaderCommit, len(rf.log) - 1) > rf.commitIndex {
+			rf.commitIndex = min(args.LeaderCommit, args.PrevLogIndex)
+			index := rf.commitIndex
+			go func(index int) {
+				rf.newCommitIndex <- index
+			}(index)
+		}
+		reply.Success = true
 	}
 }
 
@@ -304,11 +365,29 @@ func (rf *Raft) sendAppendEntries(server int, args *AppendEntriesArgs, reply *Ap
 func (rf *Raft) Start(command interface{}) (int, int, bool) {
 	index := -1
 	term := -1
-	isLeader := true
+	isLeader := false
 
 	// Your code here (2B).
+	rf.mu.Lock()
 
+	if rf.killed() || rf.status != "leader" {
+		rf.mu.Unlock()
+		return index, term, isLeader
+	}
 
+	newEntry := Entry{
+		Term: rf.currentTerm,
+		Command: command,
+	}
+	rf.log = append(rf.log, newEntry)
+	term = rf.currentTerm
+	index = len(rf.log) - 1
+	isLeader = true
+	// log.Printf("server id %d, status: %s, 任期 %d, 追加新的命令 %v 及其索引 %d\n",rf.me, rf.status, term, command, index)
+	log.Printf("server id %d, status: %s, 任期 %d, 追加新命令后的日志为 %v\n",rf.me, rf.status, term, rf.log)
+	rf.mu.Unlock()
+
+	go rf.replicatedEntries()
 	return index, term, isLeader
 }
 
@@ -342,17 +421,19 @@ func (rf *Raft) ticker() {
 		// be started and to randomize sleeping time using
 		// time.Sleep().
 		if rf.atomicReadStatus() == "candidate" { // 变为candidate, 开启选举
-			// 加锁保护
+
 			rf.mu.Lock()
 			rf.currentTerm++
-
 			rf.votedFor = rf.me
 			rf.votedTerm = rf.currentTerm
 			rf.lastTime = time.Now()
 			rf.electionTime = getRandomizedElecionTime()
+
 			total := len(rf.peers)
 			term := rf.currentTerm
-			// log.Printf("server id %d, status: %s , 任期 %d, 开始选举\n",rf.me, rf.status, rf.currentTerm)
+			LastLogIndex := len(rf.log) - 1
+			LastLogTerm := rf.log[LastLogIndex].Term
+			log.Printf("server id %d, status: %s , 任期 %d, 开始选举\n",rf.me, rf.status, rf.currentTerm)
 			rf.mu.Unlock()
 
 			// log.Printf("server id %d, status: %s 选举中, 已完成%d \n",rf.me, rf.status, finished)
@@ -360,6 +441,8 @@ func (rf *Raft) ticker() {
 			args := RequestVoteArgs{
 					Term: term,
 					CandidateId: rf.me,
+					LastLogTerm: LastLogTerm,
+					LastLogIndex: LastLogIndex,
 				}
 			majority := total / 2 + 1
 			count := 1
@@ -368,9 +451,6 @@ func (rf *Raft) ticker() {
 			
 			// log.Printf("server id %d, status: %s 选举中, 已完成%d \n",rf.me, rf.status, finished)
 			for i := 0; i < total; i++ {
-				if rf.atomicReadStatus() != "candidate" {
-					break;
-				}
 				if i != rf.me {
 					go func(server int) {
 						reply := RequestVoteReply{}
@@ -387,6 +467,7 @@ func (rf *Raft) ticker() {
 							}
 							rf.mu.Unlock()
 						}
+
 						rf.mu.Lock()
 						finished++
 						// log.Printf("server id %d, status: %s, 任期: %d 选举中, 以获得 %d 票， 已完成 %d \n",rf.me, rf.status, rf.currentTerm, count, finished)
@@ -401,18 +482,21 @@ func (rf *Raft) ticker() {
 				cond.Wait()
 			}
 
-			if rf.status == "candidate" && count >= majority  {
+			if rf.status == "candidate" && count >= majority  {  // 选举成功
 				rf.status = "leader"
+				rf.nextIndex = make([]int, len(rf.peers))
+				rf.matchIndex = make([]int, len(rf.peers))
+				log.Printf("选举成功，初始化 server id %d, status: %s, 任期: %d len(rf.log) %d \n",rf.me, rf.status, rf.currentTerm, len(rf.log))
+				for i := range rf.nextIndex {
+					rf.nextIndex[i] = len(rf.log)
+					rf.matchIndex[i] = 0
+				}
 			}
 			lastTime := rf.lastTime
-			status := rf.status
 			rf.mu.Unlock()
 			
 			// 没有结果，等待选举时间过去，又开始选举
-			if status == "candidate" { 
-				time.Sleep(rf.electionTime - time.Now().Sub(lastTime))
-				// log.Printf("server id %d, status: %s , 任期 %d, 准备下一轮选举\n",rf.me, rf.status, rf.currentTerm)
-			}
+			time.Sleep(rf.electionTime - time.Now().Sub(lastTime))
 		}
 	}
 }
@@ -421,12 +505,10 @@ func (rf *Raft) checkState() {
 	for rf.killed() == false {	
 		rf.mu.Lock()
 		if rf.status == "follower" && time.Now().Sub(rf.lastTime) > rf.electionTime {
-			// log.Printf("server id %d, status: %s, 任期: %d, 超时时间 %v\n",rf.me, rf.status, rf.currentTerm, time.Now().Sub(rf.lastTime))
+			log.Printf("server id %d, status: %s, 任期: %d, 超时时间 %v\n",rf.me, rf.status, rf.currentTerm, time.Now().Sub(rf.lastTime))
 			rf.status = "candidate"
 		}
 		sleeptTime := rf.electionTime / 2;
-		// if rf.status != "follower" {
-		// log.Printf("server id %d, status: %s\n",rf.me, rf.status)
 		
 		rf.mu.Unlock()
 		time.Sleep(sleeptTime)
@@ -439,69 +521,182 @@ func (rf *Raft) atomicReadStatus() string{
 	return rf.status
 }
 
-func (rf *Raft) leader() {
+func (rf *Raft) replicatedEntries () { // 客户端发一条日志过来，leader开始复制给其他节点
+	rf.mu.Lock()
+	total := len(rf.peers)
+	log.Printf("server id %d, status: %s, 任期: %d, 开始复制日志\n",rf.me, rf.status, rf.currentTerm)
+	rf.mu.Unlock()
+	majority := total / 2 + 1
+	finished := 1
+	cond := sync.NewCond(&rf.mu)
+
+	for i := 0; i < total; i++ {
+		if i != rf.me {
+			go func(server int) {
+				reply := AppendEntriesReply{}
+				flag := false
+				for !flag{  // 一直重发直到成功复制匹配之后的日志条目
+					rf.mu.Lock()
+
+					if rf.status != "leader" {
+						rf.mu.Unlock()
+						cond.Broadcast() 
+						return
+					}
+
+					args := AppendEntriesArgs{
+						Term: rf.currentTerm,
+						LeaderId: rf.me,
+						PrevLogIndex: rf.nextIndex[server] - 1,
+						PrevLogTerm: rf.log[rf.nextIndex[server] - 1].Term,
+						Entries: serialEntries(rf.log[rf.nextIndex[server]: ]), // 转化为字节数组
+					}
+					rf.mu.Unlock()
+
+
+					if rf.sendAppendEntries(server, &args, &reply) { // 收到回复
+						rf.mu.Lock()
+
+						// log.Printf("server id %d, status: %s, 任期: %d, 发送给 %d 的日志为 %v\n",rf.me, rf.status, rf.currentTerm, server, newEntries)
+
+						if !reply.Success { // 发送日志不成功
+							if reply.Term > rf.currentTerm {            // 变为follower
+								rf.currentTerm = reply.Term
+								rf.lastTime = time.Now()
+								rf.status = "follower"
+								flag = true
+								cond.Broadcast()
+							} else {
+								if rf.nextIndex[server] >= 1 {
+									rf.nextIndex[server]--
+								}
+							}
+						} else {  // 发送日志成功
+							flag = true
+							rf.nextIndex[server] = len(rf.log)  // 该follower此时和leader日志一致, 刷新要发送的条目索引
+
+							// log.Printf("server id %d, status: %s, 任期: %d, %d 复制日志成功\n",rf.me, rf.status, rf.currentTerm, server)
+						}
+						rf.mu.Unlock()
+					}
+				}
+				
+				rf.mu.Lock()                        
+				//收到成功回复退出
+				finished++
+				cond.Broadcast()                    
+				rf.mu.Unlock()
+			}(i)
+		}
+	}
+
+	// flag := false
+	rf.mu.Lock()
+	for rf.status == "leader" && finished < majority { // 满足所有条件一直阻塞
+		cond.Wait()
+	}
+	// log.Printf("server id %d, status: %s, 任期: %d, aliveMachines: %d \n", rf.me, rf.status, rf.currentTerm, aliveMachines)
+	
+	status := rf.status;
+	replicatedSuccess := (finished >= majority)
+	rf.mu.Unlock()
+
+	if status == "leader" && replicatedSuccess { 
+		rf.mu.Lock()
+		log.Printf("server id %d, status: %s, 任期 %d, leader复制成功后的日志为 %v\n",rf.me, rf.status, rf.currentTerm, rf.log)
+		rf.commitIndex = len(rf.log) - 1
+		index := rf.commitIndex
+		rf.mu.Unlock()
+		go func(index int) {
+			// log.Printf("<<<将要执行新的committed命令\n")
+			rf.newCommitIndex <- index
+			// log.Printf("将要执行新的committed命令>>>\n")
+		}(index)
+	}
+}
+
+func (rf *Raft) applyNewCommand() {
+	for rf.killed() == false {	
+		// log.Printf("server %d 进入applyNewCommand中\n", rf.me)
+		CommitIndex, _ := <- rf.newCommitIndex
+			
+		// log.Printf("执行新的committed命令, CommitIndex: %d\n", CommitIndex)
+
+		go func(CommitIndex int) {
+			// rf.mu.Lock()
+			// logs := rf.log
+			// lastApplied := rf.lastApplied
+			// rf.mu.Unlock()
+			rf.mu.Lock()
+			for i := rf.lastApplied + 1; i <= CommitIndex; i++ {
+				// log.Printf("log index %d\n", i)
+				applyMsg := ApplyMsg{
+					CommandValid: true,
+					Command: rf.log[i].Command,
+					CommandIndex: i,
+				}
+				// log.Printf("server %d 执行新的committed命令: %v 命令类型%T\n", rf.me, applyMsg, applyMsg.Command)
+				rf.applyCh <- applyMsg 
+			}
+			rf.lastApplied = CommitIndex
+			rf.mu.Unlock()
+		}(CommitIndex)
+		
+
+		time.Sleep(10 * time.Millisecond)
+	}
+}
+
+func (rf *Raft) sendHeartBeats() { // 发送心跳包，entries为空，且只发送一次不管是否成功
 	for rf.killed() == false {
 		if rf.atomicReadStatus() == "leader" {
 			// 加锁保护
+			time.Sleep(sendHeartbeatTime)
+
 			rf.mu.Lock()
 			total := len(rf.peers)
-			term := rf.currentTerm
-			// log.Printf("server id %d, status: %s, 任期: %d, 正在发送心跳包 \n", rf.me, rf.status, rf.currentTerm)
 			rf.mu.Unlock()
-			
-
-			args := AppendEntriesArgs{
-					Term: term,
-					LeaderId: rf.me,
-				}
-			majority := total / 2 + 1
-			aliveMachines := 1
-			finished := 1
-			cond := sync.NewCond(&rf.mu)
 
 			for i := 0; i < total; i++ {
-				if rf.atomicReadStatus() != "leader" {
-					break;
-				}
-				
 				if i != rf.me {
 					go func(server int) {
 						reply := AppendEntriesReply{}
 
-						if rf.status == "leader" && rf.sendAppendEntries(server, &args, &reply) {
+						rf.mu.Lock()
+						if rf.status != "leader" {  // 防止出现leader任期落后当成日志不匹配情况
+							rf.mu.Unlock()
+							return
+						}
+						args := AppendEntriesArgs{
+							Term: rf.currentTerm,
+							LeaderId: rf.me,
+							PrevLogIndex: rf.nextIndex[server] - 1,
+							PrevLogTerm: rf.log[rf.nextIndex[server] - 1].Term,
+							LeaderCommit: rf.commitIndex,
+						}
+						rf.mu.Unlock()
+
+						if rf.sendAppendEntries(server, &args, &reply) { // 收到回复
 							rf.mu.Lock()
-							if reply.Term > rf.currentTerm {			// 变为follower
-								rf.currentTerm = reply.Term
-								rf.lastTime = time.Now()
-								rf.status = "follower"
+							if !reply.Success { // leader任期落后或者日志不匹配
+								if reply.Term > rf.currentTerm {			// 变为follower
+									rf.currentTerm = reply.Term
+									rf.lastTime = time.Now()
+									rf.status = "follower"
+								} else {
+									if rf.nextIndex[server] >= 1 {
+										rf.nextIndex[server]--
+									}
+								}
 							}
-							aliveMachines++
 							rf.mu.Unlock()
 						}
-						rf.mu.Lock()
-						finished++
-						cond.Broadcast()
-						rf.mu.Unlock()
 					}(i)
 				}
 			}
-
-			// flag := false
-			rf.mu.Lock()
-			for rf.status == "leader" && aliveMachines < majority && finished != total { // 满足所有条件一直阻塞
-				cond.Wait()
-			}
-			// log.Printf("server id %d, status: %s, 任期: %d, aliveMachines: %d \n", rf.me, rf.status, rf.currentTerm, aliveMachines)
-			
-			status := rf.status;
-			rf.mu.Unlock()
-
-			if status == "leader" {
-				time.Sleep(sendHeartbeatTime)
-			}
 		}
-		
 	}
+	
 }
 
 //
@@ -529,19 +724,66 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	rf.votedTerm = 0
 	rf.lastTime = time.Now()
 	rf.electionTime = getRandomizedElecionTime()
+	rf.commitIndex = 0
+	rf.lastApplied = 0
+	rf.applyCh = applyCh
+	rf.newCommitIndex = make(chan int)
+	rf.log = append(rf.log, Entry{Term: 0,})
+	
 	// initialize from state persisted before a crash
 	rf.readPersist(persister.ReadRaftState())
 	
-	// log.Println("inital raft sever")
+	log.Println("inital raft sever")
 	// start ticker goroutine to start elections
 	go rf.ticker()
 	go rf.checkState()
-	go rf.leader()
+	go rf.sendHeartBeats()
+	go rf.applyNewCommand()
 
 	return rf
 }
 
 
+
+
+func min(a int, b int) int {
+	if a > b {
+		return b
+	} else {
+		return a
+	}
+}
+
 func getRandomizedElecionTime() time.Duration {
 	return time.Duration(rand.Intn(right-left) + left) * time.Millisecond
+}
+
+func serialEntries(entries []Entry) []byte{
+	var buf bytes.Buffer
+	enc := gob.NewEncoder(&buf)
+	if err := enc.Encode(entries); err != nil {
+		log.Fatalln("序列化错误:", err)
+	}
+	return buf.Bytes()
+}
+
+func d_serialEntries(receivedBytes []byte) []Entry{
+	// 创建一个新的bytes.Buffer
+	var buffer bytes.Buffer
+	var restoredEntries []Entry
+	if len(receivedBytes) == 0 { return  restoredEntries}
+
+	// 将接收到的字节数组写入到bytes.Buffer
+	_, err := buffer.Write(receivedBytes)
+	if err != nil {
+		log.Fatalln("写入错误:", err)
+	}
+
+	dec := gob.NewDecoder(&buffer)
+	
+	if err := dec.Decode(&restoredEntries); err != nil {
+		log.Fatalln("反序列化错误:", err)
+	}
+
+	return restoredEntries
 }
