@@ -105,6 +105,8 @@ type Raft struct {
 
 	newCommitIndex chan int
 	applyCh chan ApplyMsg
+	startSendHeartBeats chan bool
+	startElection chan bool
 }
 
 // return currentTerm and whether this server
@@ -215,7 +217,7 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
 	reply.Term = rf.currentTerm
-
+	// log.Printf("server %d status %s 收到 server %d 的投票请求\n", rf.me, rf.status, args.CandidateId)
 	if args.Term < rf.currentTerm { // candidate 任期落后，不可能投票
 		reply.VoteGranted = false
 	} else if args.Term >= rf.currentTerm { // candidate 任期不落后，可能投票
@@ -320,7 +322,7 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 	rf.status = "follower"
 
 	if !rf.isMatchPrevLog(args.PrevLogIndex, args.PrevLogTerm) { // 存在发送过来的日志不匹配问题
-		log.Printf("server %d 存在日志不匹配问题 leader %d\n", rf.me, args.LeaderId)
+		// log.Printf("server %d 存在日志不匹配问题 leader %d, 不匹配日志位置为 %d\n", rf.me, args.LeaderId, args.PrevLogIndex)
 		reply.Success = false
 	} else {
 		// 反序列化数据
@@ -332,12 +334,10 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 			rf.log = append(rf.log[:args.PrevLogIndex+1], restoredEntries...)
 			// log.Printf("成功同步日志, 节点 %d, 当前日志为 %v\n", rf.me, rf.log)
 		} 
-		if min(args.LeaderCommit, len(rf.log) - 1) > rf.commitIndex {
+		if min(args.LeaderCommit, args.PrevLogIndex) > rf.commitIndex {
 			rf.commitIndex = min(args.LeaderCommit, args.PrevLogIndex)
-			index := rf.commitIndex
-			go func(index int) {
-				rf.newCommitIndex <- index
-			}(index)
+			newIndex := rf.commitIndex
+			go rf.applyNewCommand(newIndex)
 		}
 		reply.Success = true
 	}
@@ -384,7 +384,7 @@ func (rf *Raft) Start(command interface{}) (int, int, bool) {
 	index = len(rf.log) - 1
 	isLeader = true
 	// log.Printf("server id %d, status: %s, 任期 %d, 追加新的命令 %v 及其索引 %d\n",rf.me, rf.status, term, command, index)
-	log.Printf("server id %d, status: %s, 任期 %d, 追加新命令后的日志为 %v\n",rf.me, rf.status, term, rf.log)
+	// log.Printf("server id %d, status: %s, 任期 %d, 追加新命令后的日志为 %v\n",rf.me, rf.status, term, rf.log)
 	rf.mu.Unlock()
 
 	go rf.replicatedEntries()
@@ -420,7 +420,8 @@ func (rf *Raft) ticker() {
 		// Your code here to check if a leader election should
 		// be started and to randomize sleeping time using
 		// time.Sleep().
-		if rf.atomicReadStatus() == "candidate" { // 变为candidate, 开启选举
+		<- rf.startElection
+		for rf.atomicReadStatus() == "candidate" { // 变为candidate, 开启选举
 
 			rf.mu.Lock()
 			rf.currentTerm++
@@ -454,14 +455,19 @@ func (rf *Raft) ticker() {
 				if i != rf.me {
 					go func(server int) {
 						reply := RequestVoteReply{}
+						rf.mu.Lock()
+						// log.Printf("server id %d, status: %s 选举中, 向%d申请投票 \n",rf.me, rf.status, server)
+						rf.mu.Unlock()
 						if rf.sendRequestVote(server, &args, &reply) {
 							rf.mu.Lock()
+							
 							if reply.Term > rf.currentTerm {			// 变为follower
 								rf.currentTerm = reply.Term
 								rf.lastTime = time.Now()
 								rf.status = "follower"
 							} else {
 								if reply.VoteGranted {
+									// log.Printf("server id %d, status: %s 选举中, 得到%d的投票\n",rf.me, rf.status, server)
 									count++;
 								}
 							}
@@ -491,6 +497,11 @@ func (rf *Raft) ticker() {
 					rf.nextIndex[i] = len(rf.log)
 					rf.matchIndex[i] = 0
 				}
+
+				go func() {
+					rf.startSendHeartBeats <- true  // 唤起心跳线程
+				}()
+				
 			}
 			lastTime := rf.lastTime
 			rf.mu.Unlock()
@@ -505,11 +516,14 @@ func (rf *Raft) checkState() {
 	for rf.killed() == false {	
 		rf.mu.Lock()
 		if rf.status == "follower" && time.Now().Sub(rf.lastTime) > rf.electionTime {
-			log.Printf("server id %d, status: %s, 任期: %d, 超时时间 %v\n",rf.me, rf.status, rf.currentTerm, time.Now().Sub(rf.lastTime))
+			// log.Printf("server id %d, status: %s, 任期: %d, 超时时间 %v\n",rf.me, rf.status, rf.currentTerm, time.Now().Sub(rf.lastTime))
 			rf.status = "candidate"
+			go func() {
+				rf.startElection <- true  // 唤起选举线程
+			}()
 		}
 		sleeptTime := rf.electionTime / 2;
-		
+		// log.Printf("server %d status %s 任期 %d\n", rf.me, rf.status, rf.currentTerm)
 		rf.mu.Unlock()
 		time.Sleep(sleeptTime)
 	}
@@ -524,7 +538,7 @@ func (rf *Raft) atomicReadStatus() string{
 func (rf *Raft) replicatedEntries () { // 客户端发一条日志过来，leader开始复制给其他节点
 	rf.mu.Lock()
 	total := len(rf.peers)
-	log.Printf("server id %d, status: %s, 任期: %d, 开始复制日志\n",rf.me, rf.status, rf.currentTerm)
+	// log.Printf("server id %d, status: %s, 任期: %d, 开始复制日志\n",rf.me, rf.status, rf.currentTerm)
 	rf.mu.Unlock()
 	majority := total / 2 + 1
 	finished := 1
@@ -535,7 +549,9 @@ func (rf *Raft) replicatedEntries () { // 客户端发一条日志过来，leade
 			go func(server int) {
 				reply := AppendEntriesReply{}
 				flag := false
-				for !flag{  // 一直重发直到成功复制匹配之后的日志条目
+				// 一直重发直到成功复制匹配之后的日志条目, 但raft 服务器被杀死之后不再重发, 避免占用cpu
+				// 测评代码并非真正的清理raft服务器, 而是将标识符置为1
+				for !rf.killed() && !flag  { 
 					rf.mu.Lock()
 
 					if rf.status != "leader" {
@@ -567,7 +583,7 @@ func (rf *Raft) replicatedEntries () { // 客户端发一条日志过来，leade
 								flag = true
 								cond.Broadcast()
 							} else {
-								if rf.nextIndex[server] >= 1 {
+								if rf.nextIndex[server] > 1 {
 									rf.nextIndex[server]--
 								}
 							}
@@ -603,56 +619,36 @@ func (rf *Raft) replicatedEntries () { // 客户端发一条日志过来，leade
 
 	if status == "leader" && replicatedSuccess { 
 		rf.mu.Lock()
-		log.Printf("server id %d, status: %s, 任期 %d, leader复制成功后的日志为 %v\n",rf.me, rf.status, rf.currentTerm, rf.log)
+		// log.Printf("server id %d, status: %s, 任期 %d, leader复制成功后的日志为 %v\n",rf.me, rf.status, rf.currentTerm, rf.log)
 		rf.commitIndex = len(rf.log) - 1
-		index := rf.commitIndex
+		newIndex := rf.commitIndex
 		rf.mu.Unlock()
-		go func(index int) {
-			// log.Printf("<<<将要执行新的committed命令\n")
-			rf.newCommitIndex <- index
-			// log.Printf("将要执行新的committed命令>>>\n")
-		}(index)
+		go rf.applyNewCommand(newIndex)  // 执行新提交的条目
 	}
 }
 
-func (rf *Raft) applyNewCommand() {
-	for rf.killed() == false {	
-		// log.Printf("server %d 进入applyNewCommand中\n", rf.me)
-		CommitIndex, _ := <- rf.newCommitIndex
-			
-		// log.Printf("执行新的committed命令, CommitIndex: %d\n", CommitIndex)
+func (rf *Raft) applyNewCommand(newIndex int) {
 
-		go func(CommitIndex int) {
-			// rf.mu.Lock()
-			// logs := rf.log
-			// lastApplied := rf.lastApplied
-			// rf.mu.Unlock()
-			rf.mu.Lock()
-			for i := rf.lastApplied + 1; i <= CommitIndex; i++ {
-				// log.Printf("log index %d\n", i)
-				applyMsg := ApplyMsg{
-					CommandValid: true,
-					Command: rf.log[i].Command,
-					CommandIndex: i,
-				}
-				// log.Printf("server %d 执行新的committed命令: %v 命令类型%T\n", rf.me, applyMsg, applyMsg.Command)
-				rf.applyCh <- applyMsg 
-			}
-			rf.lastApplied = CommitIndex
-			rf.mu.Unlock()
-		}(CommitIndex)
-		
-
-		time.Sleep(10 * time.Millisecond)
+	rf.mu.Lock()
+	for i := rf.lastApplied + 1; i <= newIndex; i++ {
+		// log.Printf("log index %d\n", i)
+		applyMsg := ApplyMsg{
+			CommandValid: true,
+			Command: rf.log[i].Command,
+			CommandIndex: i,
+		}
+		// log.Printf("server %d 执行新的committed命令: %v 命令类型%T\n", rf.me, applyMsg, applyMsg.Command)
+		rf.applyCh <- applyMsg 
 	}
+	rf.lastApplied = newIndex
+	rf.mu.Unlock()
 }
 
 func (rf *Raft) sendHeartBeats() { // 发送心跳包，entries为空，且只发送一次不管是否成功
 	for rf.killed() == false {
-		if rf.atomicReadStatus() == "leader" {
+		<- rf.startSendHeartBeats
+		for rf.atomicReadStatus() == "leader" {
 			// 加锁保护
-			time.Sleep(sendHeartbeatTime)
-
 			rf.mu.Lock()
 			total := len(rf.peers)
 			rf.mu.Unlock()
@@ -683,20 +679,20 @@ func (rf *Raft) sendHeartBeats() { // 发送心跳包，entries为空，且只�
 									rf.currentTerm = reply.Term
 									rf.lastTime = time.Now()
 									rf.status = "follower"
-								} else {
-									if rf.nextIndex[server] >= 1 {
-										rf.nextIndex[server]--
-									}
-								}
+								} //else {
+								// 	if rf.status == "leader" && rf.nextIndex[server] > 1 {
+								// 		rf.nextIndex[server]--
+								// 	}
+								// }
 							}
 							rf.mu.Unlock()
 						}
 					}(i)
 				}
 			}
+			time.Sleep(sendHeartbeatTime)
 		}
 	}
-	
 }
 
 //
@@ -728,7 +724,11 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	rf.lastApplied = 0
 	rf.applyCh = applyCh
 	rf.newCommitIndex = make(chan int)
-	rf.log = append(rf.log, Entry{Term: 0,})
+	rf.startSendHeartBeats = make(chan bool)
+	rf.startElection = make(chan bool)
+	rf.log = []Entry {
+		Entry{Term: 0,},
+	}
 	
 	// initialize from state persisted before a crash
 	rf.readPersist(persister.ReadRaftState())
@@ -738,11 +738,9 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	go rf.ticker()
 	go rf.checkState()
 	go rf.sendHeartBeats()
-	go rf.applyNewCommand()
 
 	return rf
 }
-
 
 
 
