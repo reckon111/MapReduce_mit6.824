@@ -481,8 +481,8 @@ func (cfg *config) wait(index int, n int, startTerm int) interface{} {
 	}
 	nd, cmd := cfg.nCommitted(index)
 	if nd < n {
-		cfg.t.Fatalf("only %d decided for index %d; wanted %d\n",
-			nd, index, n)
+		cfg.t.Fatalf("only %d decided for index %d, cmd is %v; wanted %d\n",
+			nd, index, cmd, n)
 	}
 	return cmd
 }

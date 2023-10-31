@@ -22,7 +22,7 @@ import (
 	"sync"
 	"sync/atomic"
 
-//	"6.824/labgob"
+	// "6.824/labgob"
 	"6.824/labrpc"
 	
 	"time"
@@ -136,8 +136,10 @@ func (rf *Raft) persist() {
 	// Example:
 	// w := new(bytes.Buffer)
 	// e := labgob.NewEncoder(w)
-	// e.Encode(rf.xxx)
-	// e.Encode(rf.yyy)
+	// e.Encode(rf.currentTerm
+	// e.Encode(rf.votedFor)
+	// e.Encode(rf.votedTerm)
+	// e.Encoude(rf.log)
 	// data := w.Bytes()
 	// rf.persister.SaveRaftState(data)
 }
@@ -294,15 +296,25 @@ type AppendEntriesReply struct {
 	// Your data here (2A).
 	Term int 
 	Success bool 
+	NewPrevLogIndex int
 }
 
-func (rf *Raft) isMatchPrevLog(PrevLogIndex int, PrevLogTerm int) bool {
-	if PrevLogIndex >= len(rf.log) { return false }
-	if rf.log[PrevLogIndex].Term != PrevLogTerm 	{  // 删除所有和leader不匹配的日志
-		rf.log = rf.log[:PrevLogIndex]
-		return false 
+func (rf *Raft) isMatchPrevLog(PrevLogIndex int, PrevLogTerm int) (bool, int) {
+	NewPrevLogIndex := PrevLogIndex
+	if PrevLogIndex >= len(rf.log) { 
+		NewPrevLogIndex = len(rf.log) - 1
+		log.Printf("server %d 因为日志最大索引不够， 日志最大索引为%d, PrevLogIndex为 %d\n", rf.me, len(rf.log) - 1, PrevLogIndex)
+		log.Printf("sever %d 日志为 %v\n", rf.me, rf.log)
+		return false, NewPrevLogIndex
 	}
-	return true
+	if rf.log[PrevLogIndex].Term != PrevLogTerm 	{  // 删除所有和leader不匹配的日志
+		log.Printf("server %d 因为日志任期不对， 日志任期为%d, PrevLogTerm为%d\n ", rf.me, rf.log[PrevLogIndex].Term, PrevLogTerm)
+		for NewPrevLogIndex > 0 && rf.log[NewPrevLogIndex].Term == rf.log[PrevLogIndex].Term {
+			NewPrevLogIndex--
+		}
+		return false, NewPrevLogIndex
+	}
+	return true, NewPrevLogIndex
 }
 
 func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply) {
@@ -321,8 +333,10 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 	rf.lastTime = time.Now()
 	rf.status = "follower"
 
-	if !rf.isMatchPrevLog(args.PrevLogIndex, args.PrevLogTerm) { // 存在发送过来的日志不匹配问题
-		// log.Printf("server %d 存在日志不匹配问题 leader %d, 不匹配日志位置为 %d\n", rf.me, args.LeaderId, args.PrevLogIndex)
+	ok, newPrevLogIndex := rf.isMatchPrevLog(args.PrevLogIndex, args.PrevLogTerm)
+	if !ok { // 存在发送过来的日志不匹配问题
+		log.Printf("server %d 存在日志不匹配问题 leader %d, 不匹配日志位置为 %d\n", rf.me, args.LeaderId, args.PrevLogIndex)
+		reply.NewPrevLogIndex = newPrevLogIndex
 		reply.Success = false
 	} else {
 		// 反序列化数据
@@ -330,10 +344,16 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 
 		// log.Printf("节点 %d, 接收到的日志为 %v\n", rf.me, newEntries)
 		if restoredEntries != nil { // 发送过来的不是心跳包
-			// log.Printf("节点 %d, 接收到的非空日志为 %v\n", rf.me, restoredEntries)
+			
+			log.Printf("节点 %d, 接收到的非空日志为 %v\n", rf.me, restoredEntries)
+			// newLog = append(rf.log[:args.PrevLogIndex+1], restoredEntries...)
+
 			rf.log = append(rf.log[:args.PrevLogIndex+1], restoredEntries...)
-			// log.Printf("成功同步日志, 节点 %d, 当前日志为 %v\n", rf.me, rf.log)
+			
+			log.Printf("成功同步日志, 节点 %d, 当前日志为 %v\n", rf.me, rf.log)
 		} 
+
+		log.Printf("开始应用日志, 节点 %d, 已应用的索引为%d, args.LeaderCommit为 %d, args.PrevLogIndex为 %d\n", rf.me, rf.commitIndex, args.LeaderCommit, args.PrevLogIndex)
 		if min(args.LeaderCommit, args.PrevLogIndex) > rf.commitIndex {
 			rf.commitIndex = min(args.LeaderCommit, args.PrevLogIndex)
 			newIndex := rf.commitIndex
@@ -383,7 +403,7 @@ func (rf *Raft) Start(command interface{}) (int, int, bool) {
 	term = rf.currentTerm
 	index = len(rf.log) - 1
 	isLeader = true
-	// log.Printf("server id %d, status: %s, 任期 %d, 追加新的命令 %v 及其索引 %d\n",rf.me, rf.status, term, command, index)
+	log.Printf("server id %d, status: %s, 任期 %d, 追加新的命令 %v 及其索引 %d, 追加新命令后的日志为 %v\n\n",rf.me, rf.status, term, command, index, rf.log)
 	// log.Printf("server id %d, status: %s, 任期 %d, 追加新命令后的日志为 %v\n",rf.me, rf.status, term, rf.log)
 	rf.mu.Unlock()
 
@@ -583,13 +603,15 @@ func (rf *Raft) replicatedEntries () { // 客户端发一条日志过来，leade
 								flag = true
 								cond.Broadcast()
 							} else {
-								if rf.nextIndex[server] > 1 {
-									rf.nextIndex[server]--
-								}
+								// if rf.nextIndex[server] > 1 {
+								// 	rf.nextIndex[server]--
+								// }
+								rf.nextIndex[server] = reply.NewPrevLogIndex + 1
 							}
 						} else {  // 发送日志成功
 							flag = true
 							rf.nextIndex[server] = len(rf.log)  // 该follower此时和leader日志一致, 刷新要发送的条目索引
+							// rf.matchIndex[server] = len(rf.log) - 1 // 记录最大的匹配的条目索引， 防止并发追加出错
 
 							// log.Printf("server id %d, status: %s, 任期: %d, %d 复制日志成功\n",rf.me, rf.status, rf.currentTerm, server)
 						}
@@ -611,7 +633,6 @@ func (rf *Raft) replicatedEntries () { // 客户端发一条日志过来，leade
 	for rf.status == "leader" && finished < majority { // 满足所有条件一直阻塞
 		cond.Wait()
 	}
-	// log.Printf("server id %d, status: %s, 任期: %d, aliveMachines: %d \n", rf.me, rf.status, rf.currentTerm, aliveMachines)
 	
 	status := rf.status;
 	replicatedSuccess := (finished >= majority)
@@ -619,7 +640,7 @@ func (rf *Raft) replicatedEntries () { // 客户端发一条日志过来，leade
 
 	if status == "leader" && replicatedSuccess { 
 		rf.mu.Lock()
-		// log.Printf("server id %d, status: %s, 任期 %d, leader复制成功后的日志为 %v\n",rf.me, rf.status, rf.currentTerm, rf.log)
+		log.Printf("server id %d, status: %s, 任期 %d, leader复制成功后的日志为 %v\n",rf.me, rf.status, rf.currentTerm, rf.log)
 		rf.commitIndex = len(rf.log) - 1
 		newIndex := rf.commitIndex
 		rf.mu.Unlock()
@@ -641,6 +662,7 @@ func (rf *Raft) applyNewCommand(newIndex int) {
 		rf.applyCh <- applyMsg 
 	}
 	rf.lastApplied = newIndex
+	log.Printf("server %d status %s, 应用的最大命令索引为: %d\n", rf.me, rf.status, rf.lastApplied)
 	rf.mu.Unlock()
 }
 
@@ -674,18 +696,23 @@ func (rf *Raft) sendHeartBeats() { // 发送心跳包，entries为空，且只�
 
 						if rf.sendAppendEntries(server, &args, &reply) { // 收到回复
 							rf.mu.Lock()
+							log.Printf("sever %d status %s 发送心跳包给 server %d, PrevLogIndex is %d LeaderCommit is %d\n", rf.me, rf.status, server, args.PrevLogIndex, args.LeaderCommit)
+							rf.mu.Unlock()
+
 							if !reply.Success { // leader任期落后或者日志不匹配
+								rf.mu.Lock()
 								if reply.Term > rf.currentTerm {			// 变为follower
 									rf.currentTerm = reply.Term
 									rf.lastTime = time.Now()
 									rf.status = "follower"
-								} //else {
-								// 	if rf.status == "leader" && rf.nextIndex[server] > 1 {
-								// 		rf.nextIndex[server]--
-								// 	}
-								// }
+									rf.mu.Unlock()
+								} else {
+									rf.mu.Unlock()
+									if rf.atomicReadStatus() == "leader" {
+										go rf.replicatedEntries()
+									}
+								}
 							}
-							rf.mu.Unlock()
 						}
 					}(i)
 				}
