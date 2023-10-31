@@ -103,6 +103,7 @@ func make_config(t *testing.T, n int, unreliable bool, snapshot bool) *config {
 
 // shut down a Raft server but save its persistent state.
 func (cfg *config) crash1(i int) {
+	log.Printf("server %d crashed\n", i)
 	cfg.disconnect(i)
 	cfg.net.DeleteServer(i) // disable client connections to the server.
 
@@ -283,6 +284,7 @@ func (cfg *config) start1(i int, applier func(int, chan ApplyMsg)) {
 	srv := labrpc.MakeServer()
 	srv.AddService(svc)
 	cfg.net.AddServer(i, srv)
+	log.Printf("server %d 重新恢复\n", i);
 }
 
 func (cfg *config) checkTimeout() {
@@ -398,6 +400,7 @@ func (cfg *config) checkOneLeader() int {
 			return leaders[lastTermWithLeader][0]
 		}
 	}
+	log.Printf("超时为选出领导者\n")
 	cfg.t.Fatalf("expected one leader, got none")
 	return -1
 }
