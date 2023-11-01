@@ -1,0 +1,924 @@
+09:49:27.461429 server 0 crashed
+09:49:27.461820 inital raft sever 0
+09:49:27.462211 server 0 重新恢复
+09:49:27.462241 server 1 crashed
+09:49:27.462548 inital raft sever 1
+09:49:27.463030 server 1 status follower 任期 0
+09:49:27.463048 server 1 重新恢复
+09:49:27.463192 server 2 crashed
+09:49:27.463296 inital raft sever 2
+09:49:27.463076 server 0 status follower 任期 0
+09:49:27.463789 server 2 重新恢复
+Test (2A): initial election ...
+09:49:27.463871 server 2 status follower 任期 0
+09:49:27.722051 server 0 status follower 任期 0
+09:49:27.839225 server 2 status follower 任期 0
+09:49:27.891118 server 1 status follower 任期 0
+09:49:27.980562 server id 0, status: follower, 任期: 0, 选举时间为:515ms rf.electionTime, 超时时间 518.665424ms
+09:49:27.980767 server 0 status candidate 任期 0
+09:49:27.981257 server id 0, status: candidate , 任期 1, 开始选举, 日志为[{0 <nil>}]
+09:49:27.981633 server id 0, status: candidate 选举中, 任期1 , 向1申请投票 
+09:49:27.981779 server id 0, status: candidate 选举中, 任期1 , 向2申请投票 
+09:49:27.982596 server 2 status follower 任期 0, 收到 server 0 任期 1 的投票请求
+09:49:27.982919 server id 0, status: candidate 选举中, 任期1, 得到2的投票
+09:49:27.982938 server id 0, status: candidate 选举中, 任期: 1 , 2 回复了
+09:49:27.982950 server id 0, status: candidate, 任期: 1 选举中, 以获得 2 票， 已完成 2 
+09:49:27.982962 选举成功，初始化 server id 0, status: leader, 任期: 1 len(rf.log) 1 
+09:49:27.983042 server 1 status follower 任期 0, 收到 server 0 任期 1 的投票请求
+09:49:27.983491 server id 0, status: leader 选举中, 任期1, 得到1的投票
+09:49:27.983519 server id 0, status: leader 选举中, 任期: 1 , 1 回复了
+09:49:27.983532 server id 0, status: leader, 任期: 1 选举中, 以获得 3 票， 已完成 3 
+09:49:27.984113 server 1 收到 leader 0 的心跳包, args.Term 1
+09:49:27.984457 sever 0 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:27.984805 server 2 收到 leader 0 的心跳包, args.Term 1
+09:49:27.985071 sever 0 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:28.185006 server 2 收到 leader 0 的心跳包, args.Term 1
+09:49:28.185187 server 1 收到 leader 0 的心跳包, args.Term 1
+09:49:28.185382 sever 0 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:28.185416 sever 0 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:28.214863 server 2 status follower 任期 1
+09:49:28.239377 server 0 status leader 任期 1
+09:49:28.319256 server 1 status follower 任期 1
+09:49:28.386316 server 2 收到 leader 0 的心跳包, args.Term 1
+09:49:28.386316 server 1 收到 leader 0 的心跳包, args.Term 1
+09:49:28.386711 sever 0 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:28.386747 sever 0 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:28.554746 server 0 status leader 任期 1
+09:49:28.587158 server 1 收到 leader 0 的心跳包, args.Term 1
+09:49:28.587483 server 2 收到 leader 0 的心跳包, args.Term 1
+09:49:28.587516 sever 0 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:28.587725 sever 0 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:28.590788 server 2 status follower 任期 1
+09:49:28.747607 server 1 status follower 任期 1
+09:49:28.787182 server 1 收到 leader 0 的心跳包, args.Term 1
+09:49:28.787216 server 2 收到 leader 0 的心跳包, args.Term 1
+09:49:28.787365 sever 0 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:28.787384 sever 0 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:28.869935 server 0 status leader 任期 1
+09:49:28.965898 server 2 status follower 任期 1
+09:49:28.987674 server 2 收到 leader 0 的心跳包, args.Term 1
+09:49:28.987679 server 1 收到 leader 0 的心跳包, args.Term 1
+09:49:28.988066 sever 0 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:28.988119 sever 0 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:29.175948 server 1 status follower 任期 1
+09:49:29.185238 server 0 status leader 任期 1
+09:49:29.188642 server 1 收到 leader 0 的心跳包, args.Term 1
+09:49:29.189030 sever 0 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:29.189586 server 2 收到 leader 0 的心跳包, args.Term 1
+09:49:29.189816 sever 0 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:29.341090 server 2 status follower 任期 1
+09:49:29.390400 server 2 收到 leader 0 的心跳包, args.Term 1
+09:49:29.390491 server 1 收到 leader 0 的心跳包, args.Term 1
+09:49:29.390644 sever 0 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:29.390687 sever 0 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:29.500825 server 0 status leader 任期 1
+09:49:29.591170 server 1 收到 leader 0 的心跳包, args.Term 1
+09:49:29.591625 sever 0 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:29.591759 server 2 收到 leader 0 的心跳包, args.Term 1
+09:49:29.591984 sever 0 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:29.604502 server 1 status follower 任期 1
+09:49:29.716586 server 2 status follower 任期 1
+09:49:29.793327 server 1 收到 leader 0 的心跳包, args.Term 1
+09:49:29.793488 server 2 收到 leader 0 的心跳包, args.Term 1
+09:49:29.793667 sever 0 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:29.794512 sever 0 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:29.815645 server 0 status leader 任期 1
+09:49:29.993647 server 2 收到 leader 0 的心跳包, args.Term 1
+09:49:29.994040 sever 0 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:29.994047 server 1 收到 leader 0 的心跳包, args.Term 1
+09:49:29.994302 sever 0 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:30.032739 server 1 status follower 任期 1
+09:49:30.091824 server 2 status follower 任期 1
+09:49:30.130904 server 0 status leader 任期 1
+09:49:30.194664 server 1 收到 leader 0 的心跳包, args.Term 1
+09:49:30.194674 server 2 收到 leader 0 的心跳包, args.Term 1
+09:49:30.195005 sever 0 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:30.195176 sever 0 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:30.395621 server 1 收到 leader 0 的心跳包, args.Term 1
+09:49:30.395622 server 2 收到 leader 0 的心跳包, args.Term 1
+09:49:30.396030 sever 0 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:30.396127 sever 0 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:30.445770 server 0 status leader 任期 1
+09:49:30.460662 server 1 status follower 任期 1
+09:49:30.467628 server 2 status follower 任期 1
+  ... Passed --   3.1  3   28    5616    0
+09:49:30.574460 server 0 crashed
+09:49:30.574591 inital raft sever 0
+09:49:30.574830 server 0 重新恢复
+09:49:30.574932 server 1 crashed
+09:49:30.574994 inital raft sever 1
+09:49:30.574910 server 0 status follower 任期 0
+09:49:30.575577 server 1 重新恢复
+09:49:30.575792 server 2 crashed
+09:49:30.575747 server 1 status follower 任期 0
+09:49:30.576080 inital raft sever 2
+09:49:30.576392 server 2 status follower 任期 0
+09:49:30.576472 server 2 重新恢复
+Test (2A): election after network failure ...
+09:49:30.916863 server 0 status follower 任期 0
+09:49:30.921490 server 2 status follower 任期 0
+09:49:30.937108 server 1 status follower 任期 0
+09:49:31.259035 server id 0, status: follower, 任期: 0, 选举时间为:683ms rf.electionTime, 超时时间 684.434239ms
+09:49:31.259140 server 0 status candidate 任期 0
+09:49:31.259299 server id 0, status: candidate , 任期 1, 开始选举, 日志为[{0 <nil>}]
+09:49:31.259423 server id 0, status: candidate 选举中, 任期1 , 向2申请投票 
+09:49:31.259512 server id 0, status: candidate 选举中, 任期1 , 向1申请投票 
+09:49:31.260111 server 2 status follower 任期 0, 收到 server 0 任期 1 的投票请求
+09:49:31.260236 server 1 status follower 任期 0, 收到 server 0 任期 1 的投票请求
+09:49:31.260440 server id 0, status: candidate 选举中, 任期1, 得到2的投票
+09:49:31.260496 server id 0, status: candidate 选举中, 任期: 1 , 2 回复了
+09:49:31.260509 server id 0, status: candidate, 任期: 1 选举中, 以获得 2 票， 已完成 2 
+09:49:31.260532 选举成功，初始化 server id 0, status: leader, 任期: 1 len(rf.log) 1 
+09:49:31.260825 server id 0, status: leader 选举中, 任期1, 得到1的投票
+09:49:31.260881 server id 0, status: leader 选举中, 任期: 1 , 1 回复了
+09:49:31.260920 server id 0, status: leader, 任期: 1 选举中, 以获得 3 票， 已完成 3 
+09:49:31.261211 server 1 收到 leader 0 的心跳包, args.Term 1
+09:49:31.261366 server 2 收到 leader 0 的心跳包, args.Term 1
+09:49:31.261469 sever 0 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:31.261785 sever 0 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:31.266279 server 2 status follower 任期 1
+09:49:31.298411 server 1 status follower 任期 1
+09:49:31.461945 server 1 收到 leader 0 的心跳包, args.Term 1
+09:49:31.461999 server 2 收到 leader 0 的心跳包, args.Term 1
+09:49:31.462291 sever 0 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:31.462332 sever 0 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:31.600114 断开第一任leader, server 0
+09:49:31.601042 server 0 status leader 任期 1
+09:49:31.611062 server 2 status follower 任期 1
+09:49:31.659694 server 1 status follower 任期 1
+09:49:31.956185 server 2 status follower 任期 1
+09:49:31.973721 server 0 status leader 任期 1
+09:49:32.020686 server 1 status follower 任期 1
+09:49:32.300361 server id 2, status: follower, 任期: 1, 选举时间为:688ms rf.electionTime, 超时时间 838.316054ms
+09:49:32.300447 server 2 status candidate 任期 1
+09:49:32.300611 server id 2, status: candidate , 任期 2, 开始选举, 日志为[{0 <nil>}]
+09:49:32.300806 server id 2, status: candidate 选举中, 任期2 , 向0申请投票 
+09:49:32.300907 server id 2, status: candidate 选举中, 任期2 , 向1申请投票 
+09:49:32.301563 server 1 status follower 任期 1, 收到 server 2 任期 2 的投票请求
+09:49:32.301845 server id 2, status: candidate 选举中, 任期2, 得到1的投票
+09:49:32.301885 server id 2, status: candidate 选举中, 任期: 2 , 1 回复了
+09:49:32.301898 server id 2, status: candidate, 任期: 2 选举中, 以获得 2 票， 已完成 2 
+09:49:32.301926 选举成功，初始化 server id 2, status: leader, 任期: 2 len(rf.log) 1 
+09:49:32.302532 server 1 收到 leader 2 的心跳包, args.Term 2
+09:49:32.302803 sever 2 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:32.346350 server 0 status leader 任期 1
+09:49:32.382106 server 1 status follower 任期 2
+09:49:32.502867 server 1 收到 leader 2 的心跳包, args.Term 2
+09:49:32.503187 sever 2 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:32.636254 重新连上 server 0
+09:49:32.645376 server 2 status leader 任期 2
+09:49:32.667068 server 2 收到 leader 0 的心跳包, args.Term 1
+09:49:32.667123 server 2 收到任期落后于自己的 leader 0 
+09:49:32.667450 sever 0 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:32.667489 server 1 收到 leader 0 的心跳包, args.Term 1
+09:49:32.667512 server 1 收到任期落后于自己的 leader 0 
+09:49:32.667717 sever 0 status follower 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:32.703501 server 1 收到 leader 2 的心跳包, args.Term 2
+09:49:32.703506 server 0 收到 leader 2 的心跳包, args.Term 2
+09:49:32.703873 sever 2 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:32.703956 sever 2 status leader 发送心跳包给 server 0, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:32.719346 server 0 status follower 任期 2
+09:49:32.743296 server 1 status follower 任期 2
+09:49:32.895497 server 2 status leader 任期 2
+09:49:32.904317 server 0 收到 leader 2 的心跳包, args.Term 2
+09:49:32.904317 server 1 收到 leader 2 的心跳包, args.Term 2
+09:49:32.904719 sever 2 status leader 发送心跳包给 server 0, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:32.904758 sever 2 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:33.091657 server 0 status follower 任期 2
+09:49:33.104520 server 1 status follower 任期 2
+09:49:33.104969 server 1 收到 leader 2 的心跳包, args.Term 2
+09:49:33.104982 server 0 收到 leader 2 的心跳包, args.Term 2
+09:49:33.105385 sever 2 status leader 发送心跳包给 server 0, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:33.105482 sever 2 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:33.145834 server 2 status leader 任期 2
+09:49:33.178829 断开第二任leader, server 2
+09:49:33.178929 断开follower server 0, 之后不能选举
+09:49:33.396227 server 2 status leader 任期 2
+09:49:33.464056 server 0 status follower 任期 2
+09:49:33.465875 server 1 status follower 任期 2
+09:49:33.646194 server 2 status leader 任期 2
+09:49:33.827254 server id 1, status: follower, 任期: 2, 选举时间为:721ms rf.electionTime, 超时时间 722.185881ms
+09:49:33.827486 server 1 status candidate 任期 2
+09:49:33.827689 server id 1, status: candidate , 任期 3, 开始选举, 日志为[{0 <nil>}]
+09:49:33.827810 server id 1, status: candidate 选举中, 任期3 , 向0申请投票 
+09:49:33.827989 server id 1, status: candidate 选举中, 任期3 , 向2申请投票 
+09:49:33.836452 server 0 status follower 任期 2
+09:49:33.896188 server 2 status leader 任期 2
+09:49:34.146100 server 2 status leader 任期 2
+09:49:34.188446 server 1 status candidate 任期 3
+09:49:34.209391 server id 0, status: follower, 任期: 2, 选举时间为:744ms rf.electionTime, 超时时间 1.104295267s
+09:49:34.209683 server 0 status candidate 任期 2
+09:49:34.209808 server id 0, status: candidate , 任期 3, 开始选举, 日志为[{0 <nil>}]
+09:49:34.209947 server id 0, status: candidate 选举中, 任期3 , 向1申请投票 
+09:49:34.210071 server id 0, status: candidate 选举中, 任期3 , 向2申请投票 
+09:49:34.293814 sever 1 在任期 3 选举失败, 重新选举了
+09:49:34.294067 server id 1, status: candidate , 任期 4, 开始选举, 日志为[{0 <nil>}]
+09:49:34.294406 server id 1, status: candidate 选举中, 任期4 , 向2申请投票 
+09:49:34.294610 server id 1, status: candidate 选举中, 任期4 , 向0申请投票 
+09:49:34.396578 server 2 status leader 任期 2
+09:49:34.421294 server 1 status candidate 任期 4
+09:49:34.581947 server 0 status candidate 任期 3
+09:49:34.647037 server 2 status leader 任期 2
+09:49:34.747362 server 1 status candidate 任期 4
+09:49:34.896829 server 2 status leader 任期 2
+09:49:34.945074 sever 1 在任期 4 选举失败, 重新选举了
+09:49:34.945320 server id 1, status: candidate , 任期 5, 开始选举, 日志为[{0 <nil>}]
+09:49:34.945539 server id 1, status: candidate 选举中, 任期5 , 向0申请投票 
+09:49:34.945636 server id 1, status: candidate 选举中, 任期5 , 向2申请投票 
+09:49:34.973019 server 0 status candidate 任期 3
+09:49:34.992001 sever 0 在任期 3 选举失败, 重新选举了
+09:49:34.992198 server id 0, status: candidate , 任期 4, 开始选举, 日志为[{0 <nil>}]
+09:49:34.992323 server id 0, status: candidate 选举中, 任期4 , 向2申请投票 
+09:49:34.992454 server id 0, status: candidate 选举中, 任期4 , 向1申请投票 
+09:49:35.073982 server 1 status candidate 任期 5
+09:49:35.146826 server 2 status leader 任期 2
+09:49:35.179084 再次连上server 0, 之后可以选举
+09:49:35.305637 server 1 status candidate 任期 5
+09:49:35.363952 server 0 status candidate 任期 4
+09:49:35.396501 server 2 status leader 任期 2
+09:49:35.407602 sever 1 在任期 5 选举失败, 重新选举了
+09:49:35.407799 server id 1, status: candidate , 任期 6, 开始选举, 日志为[{0 <nil>}]
+09:49:35.407923 server id 1, status: candidate 选举中, 任期6 , 向2申请投票 
+09:49:35.408051 server id 1, status: candidate 选举中, 任期6 , 向0申请投票 
+09:49:35.408465 server 0 status candidate 任期 4, 收到 server 1 任期 6 的投票请求
+09:49:35.408781 server id 1, status: candidate 选举中, 任期6, 得到0的投票
+09:49:35.408819 server id 1, status: candidate 选举中, 任期: 6 , 0 回复了
+09:49:35.408834 server id 1, status: candidate, 任期: 6 选举中, 以获得 2 票， 已完成 2 
+09:49:35.408865 选举成功，初始化 server id 1, status: leader, 任期: 6 len(rf.log) 1 
+09:49:35.409582 server 0 收到 leader 1 的心跳包, args.Term 6
+09:49:35.409874 sever 1 status leader 发送心跳包给 server 0, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:35.444120 server id 2, status: leader 选举中, 任期: 2 , 0 回复了
+09:49:35.444188 server id 2, status: leader, 任期: 2 选举中, 以获得 2 票， 已完成 3 
+09:49:35.537896 server 1 status leader 任期 6
+09:49:35.610385 server 0 收到 leader 1 的心跳包, args.Term 6
+09:49:35.610695 sever 1 status leader 发送心跳包给 server 0, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:35.646381 server 2 status leader 任期 2
+09:49:35.707315 重新第二任leader, server 2, 不应该影响现任leader
+09:49:35.713423 server 0 收到 leader 2 的心跳包, args.Term 2
+09:49:35.713473 server 0 收到任期落后于自己的 leader 2 
+09:49:35.713767 sever 2 status leader 发送心跳包给 server 0, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:35.713819 server 1 收到 leader 2 的心跳包, args.Term 2
+09:49:35.713841 server 1 收到任期落后于自己的 leader 2 
+09:49:35.714090 sever 2 status follower 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:35.751491 server 1 status leader 任期 6
+09:49:35.755868 server 0 status follower 任期 6
+09:49:35.810613 server 2 收到 leader 1 的心跳包, args.Term 6
+09:49:35.810629 server 0 收到 leader 1 的心跳包, args.Term 6
+09:49:35.810953 sever 1 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:35.811026 sever 1 status leader 发送心跳包给 server 0, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:35.896797 server 2 status follower 任期 6
+09:49:35.964481 server 1 status leader 任期 6
+09:49:36.010813 server 0 收到 leader 1 的心跳包, args.Term 6
+09:49:36.011193 server 2 收到 leader 1 的心跳包, args.Term 6
+09:49:36.011267 sever 1 status leader 发送心跳包给 server 0, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:36.011539 sever 1 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:36.058024 server id 1, status: leader 选举中, 任期: 6 , 0 回复了
+09:49:36.058081 server id 1, status: leader, 任期: 6 选举中, 以获得 1 票， 已完成 2 
+09:49:36.146596 server 2 status follower 任期 6
+09:49:36.148415 server 0 status follower 任期 6
+09:49:36.177808 server 1 status leader 任期 6
+  ... Passed --   5.6  3   76   10980    0
+09:49:36.187192 server 0 crashed
+09:49:36.187396 inital raft sever 0
+09:49:36.187797 server 0 status follower 任期 0
+09:49:36.187878 server 0 重新恢复
+09:49:36.187910 server 1 crashed
+09:49:36.188019 inital raft sever 1
+09:49:36.188244 server 1 重新恢复
+09:49:36.188323 server 1 status follower 任期 0
+09:49:36.188353 server 2 crashed
+09:49:36.188630 inital raft sever 2
+09:49:36.189547 server 2 重新恢复
+09:49:36.189603 server 3 crashed
+09:49:36.189614 server 2 status follower 任期 0
+09:49:36.189720 inital raft sever 3
+09:49:36.189989 server 3 status follower 任期 0
+09:49:36.190088 server 3 重新恢复
+09:49:36.190116 server 4 crashed
+09:49:36.190189 inital raft sever 4
+09:49:36.190527 server 4 status follower 任期 0
+09:49:36.190533 server 4 重新恢复
+09:49:36.190563 server 5 crashed
+09:49:36.190668 inital raft sever 5
+09:49:36.191020 server 5 重新恢复
+09:49:36.191036 server 6 crashed
+09:49:36.191108 inital raft sever 6
+09:49:36.191452 server 5 status follower 任期 0
+09:49:36.191455 server 6 重新恢复
+09:49:36.191486 server 6 status follower 任期 0
+Test (2A): multiple elections ...
+09:49:36.250843 server id 1, status: leader 选举中, 任期: 6 , 2 回复了
+09:49:36.250909 server id 1, status: leader, 任期: 6 选举中, 以获得 2 票， 已完成 3 
+09:49:36.404540 server 6 status follower 任期 0
+09:49:36.428546 server 5 status follower 任期 0
+09:49:36.509414 server 4 status follower 任期 0
+09:49:36.559880 server 1 status follower 任期 0
+09:49:36.584637 server 3 status follower 任期 0
+09:49:36.614687 server 0 status follower 任期 0
+09:49:36.617619 server id 6, status: follower, 任期: 0, 选举时间为:425ms rf.electionTime, 超时时间 426.485858ms
+09:49:36.617674 server 6 status candidate 任期 0
+09:49:36.617857 server id 6, status: candidate , 任期 1, 开始选举, 日志为[{0 <nil>}]
+09:49:36.618063 server id 6, status: candidate 选举中, 任期1 , 向0申请投票 
+09:49:36.618157 server id 6, status: candidate 选举中, 任期1 , 向4申请投票 
+09:49:36.618337 server id 6, status: candidate 选举中, 任期1 , 向2申请投票 
+09:49:36.618405 server id 6, status: candidate 选举中, 任期1 , 向1申请投票 
+09:49:36.618775 server id 6, status: candidate 选举中, 任期1 , 向3申请投票 
+09:49:36.618947 server id 6, status: candidate 选举中, 任期1 , 向5申请投票 
+09:49:36.619016 server 0 status follower 任期 0, 收到 server 6 任期 1 的投票请求
+09:49:36.619873 server id 6, status: candidate 选举中, 任期1, 得到0的投票
+09:49:36.619914 server id 6, status: candidate 选举中, 任期: 1 , 0 回复了
+09:49:36.619926 server id 6, status: candidate, 任期: 1 选举中, 以获得 2 票， 已完成 2 
+09:49:36.619989 server 4 status follower 任期 0, 收到 server 6 任期 1 的投票请求
+09:49:36.620339 server id 6, status: candidate 选举中, 任期1, 得到4的投票
+09:49:36.620406 server id 6, status: candidate 选举中, 任期: 1 , 4 回复了
+09:49:36.620422 server id 6, status: candidate, 任期: 1 选举中, 以获得 3 票， 已完成 3 
+09:49:36.620602 server 2 status follower 任期 0, 收到 server 6 任期 1 的投票请求
+09:49:36.620637 server 3 status follower 任期 0, 收到 server 6 任期 1 的投票请求
+09:49:36.621005 server id 6, status: candidate 选举中, 任期1, 得到2的投票
+09:49:36.621026 server id 6, status: candidate 选举中, 任期: 1 , 2 回复了
+09:49:36.621045 server id 6, status: candidate, 任期: 1 选举中, 以获得 4 票， 已完成 4 
+09:49:36.621124 选举成功，初始化 server id 6, status: leader, 任期: 1 len(rf.log) 1 
+09:49:36.621222 server 1 status follower 任期 0, 收到 server 6 任期 1 的投票请求
+09:49:36.621555 server id 6, status: leader 选举中, 任期1, 得到1的投票
+09:49:36.621575 server id 6, status: leader 选举中, 任期: 1 , 1 回复了
+09:49:36.621587 server id 6, status: leader, 任期: 1 选举中, 以获得 5 票， 已完成 5 
+09:49:36.621917 server 5 status follower 任期 0, 收到 server 6 任期 1 的投票请求
+09:49:36.622342 server id 6, status: leader 选举中, 任期1, 得到3的投票
+09:49:36.623230 server id 6, status: leader 选举中, 任期: 1 , 3 回复了
+09:49:36.623357 server id 6, status: leader, 任期: 1 选举中, 以获得 6 票， 已完成 6 
+09:49:36.622650 server 4 收到 leader 6 的心跳包, args.Term 1
+09:49:36.623929 server id 6, status: leader 选举中, 任期1, 得到5的投票
+09:49:36.623963 server id 6, status: leader 选举中, 任期: 1 , 5 回复了
+09:49:36.623981 server id 6, status: leader, 任期: 1 选举中, 以获得 7 票， 已完成 7 
+09:49:36.624275 server 0 收到 leader 6 的心跳包, args.Term 1
+09:49:36.624317 sever 6 status leader 发送心跳包给 server 4, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:36.624531 server 5 收到 leader 6 的心跳包, args.Term 1
+09:49:36.625072 server 2 收到 leader 6 的心跳包, args.Term 1
+09:49:36.625216 sever 6 status leader 发送心跳包给 server 5, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:36.624557 server 3 收到 leader 6 的心跳包, args.Term 1
+09:49:36.625546 sever 6 status leader 发送心跳包给 server 0, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:36.625635 sever 6 status leader 发送心跳包给 server 3, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:36.625752 sever 6 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:36.625933 server 1 收到 leader 6 的心跳包, args.Term 1
+09:49:36.626207 sever 6 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:36.638673 server 2 status follower 任期 1
+09:49:36.665468 server 5 status follower 任期 1
+09:49:36.828272 server 4 status follower 任期 1
+09:49:36.831036 server 6 status leader 任期 1
+09:49:36.902813 server 5 status follower 任期 1
+09:49:36.930652 server 1 status follower 任期 1
+09:49:36.979404 server 3 status follower 任期 1
+09:49:37.041352 server 0 status follower 任期 1
+09:49:37.077354 server 6 status leader 任期 1
+09:49:37.088258 server 2 status follower 任期 1
+09:49:37.139805 server id 5, status: follower, 任期: 1, 选举时间为:473ms rf.electionTime, 超时时间 514.854942ms
+09:49:37.139897 server 5 status candidate 任期 1
+09:49:37.140062 server id 5, status: candidate , 任期 2, 开始选举, 日志为[{0 <nil>}]
+09:49:37.140220 server id 5, status: candidate 选举中, 任期2 , 向1申请投票 
+09:49:37.140307 server id 5, status: candidate 选举中, 任期2 , 向6申请投票 
+09:49:37.140415 server id 5, status: candidate 选举中, 任期2 , 向2申请投票 
+09:49:37.140582 server id 5, status: candidate 选举中, 任期2 , 向0申请投票 
+09:49:37.140764 server id 5, status: candidate 选举中, 任期2 , 向4申请投票 
+09:49:37.140878 server id 5, status: candidate 选举中, 任期2 , 向3申请投票 
+09:49:37.140958 server 1 status follower 任期 1, 收到 server 5 任期 2 的投票请求
+09:49:37.141447 server id 5, status: candidate 选举中, 任期2, 得到1的投票
+09:49:37.141483 server id 5, status: candidate 选举中, 任期: 2 , 1 回复了
+09:49:37.141494 server id 5, status: candidate, 任期: 2 选举中, 以获得 2 票， 已完成 2 
+09:49:37.141583 server 0 status follower 任期 1, 收到 server 5 任期 2 的投票请求
+09:49:37.142035 server 2 status follower 任期 1, 收到 server 5 任期 2 的投票请求
+09:49:37.142054 server id 5, status: candidate 选举中, 任期2, 得到0的投票
+09:49:37.142083 server id 5, status: candidate 选举中, 任期: 2 , 0 回复了
+09:49:37.142094 server id 5, status: candidate, 任期: 2 选举中, 以获得 3 票， 已完成 3 
+09:49:37.142522 server id 5, status: candidate 选举中, 任期2, 得到2的投票
+09:49:37.142544 server id 5, status: candidate 选举中, 任期: 2 , 2 回复了
+09:49:37.142555 server id 5, status: candidate, 任期: 2 选举中, 以获得 4 票， 已完成 4 
+09:49:37.142610 选举成功，初始化 server id 5, status: leader, 任期: 2 len(rf.log) 1 
+09:49:37.142620 server 3 status follower 任期 1, 收到 server 5 任期 2 的投票请求
+09:49:37.142930 server id 5, status: leader 选举中, 任期2, 得到3的投票
+09:49:37.142965 server id 5, status: leader 选举中, 任期: 2 , 3 回复了
+09:49:37.142980 server id 5, status: leader, 任期: 2 选举中, 以获得 5 票， 已完成 5 
+09:49:37.143772 server 1 收到 leader 5 的心跳包, args.Term 2
+09:49:37.144144 sever 5 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:37.144269 server 2 收到 leader 5 的心跳包, args.Term 2
+09:49:37.144461 server 3 收到 leader 5 的心跳包, args.Term 2
+09:49:37.144353 server 0 收到 leader 5 的心跳包, args.Term 2
+09:49:37.144646 sever 5 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:37.144858 sever 5 status leader 发送心跳包给 server 0, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:37.145257 sever 5 status leader 发送心跳包给 server 3, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:37.146973 server 4 status follower 任期 1
+09:49:37.258249 server id 0, status: follower 选举中, 任期: 6 , 2 回复了
+09:49:37.258365 server id 0, status: follower, 任期: 6 选举中, 以获得 1 票， 已完成 2 
+09:49:37.301391 server 1 status follower 任期 2
+09:49:37.323710 server 6 status leader 任期 1
+09:49:37.327459 server id 1, status: leader 选举中, 任期: 6 , 2 回复了
+09:49:37.327554 server id 1, status: leader, 任期: 6 选举中, 以获得 1 票， 已完成 2 
+09:49:37.344198 server 0 收到 leader 5 的心跳包, args.Term 2
+09:49:37.344612 server 2 收到 leader 5 的心跳包, args.Term 2
+09:49:37.344890 sever 5 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:37.345130 sever 5 status leader 发送心跳包给 server 0, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:37.345150 server 3 收到 leader 5 的心跳包, args.Term 2
+09:49:37.344927 server 1 收到 leader 5 的心跳包, args.Term 2
+09:49:37.345655 sever 5 status leader 发送心跳包给 server 3, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:37.345755 sever 5 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:37.374568 server 3 status follower 任期 2
+09:49:37.377043 server 5 status leader 任期 2
+09:49:37.465571 server id 4, status: follower, 任期: 1, 选举时间为:637ms rf.electionTime, 超时时间 841.989625ms
+09:49:37.465663 server 4 status candidate 任期 1
+09:49:37.465828 server id 4, status: candidate , 任期 2, 开始选举, 日志为[{0 <nil>}]
+09:49:37.465978 server id 4, status: candidate 选举中, 任期2 , 向1申请投票 
+09:49:37.466105 server id 4, status: candidate 选举中, 任期2 , 向3申请投票 
+09:49:37.466205 server id 4, status: candidate 选举中, 任期2 , 向6申请投票 
+09:49:37.466355 server id 4, status: candidate 选举中, 任期2 , 向2申请投票 
+09:49:37.466439 server id 4, status: candidate 选举中, 任期2 , 向0申请投票 
+09:49:37.466584 server id 4, status: candidate 选举中, 任期2 , 向5申请投票 
+09:49:37.468193 server 0 status follower 任期 2
+09:49:37.537191 server 2 status follower 任期 2
+09:49:37.545793 server 0 收到 leader 5 的心跳包, args.Term 2
+09:49:37.546244 sever 5 status leader 发送心跳包给 server 0, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:37.546401 server 1 收到 leader 5 的心跳包, args.Term 2
+09:49:37.546660 sever 5 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:37.547274 server 3 收到 leader 5 的心跳包, args.Term 2
+09:49:37.547552 server 2 收到 leader 5 的心跳包, args.Term 2
+09:49:37.547785 sever 5 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:37.548011 sever 5 status leader 发送心跳包给 server 3, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:37.570207 server 6 status leader 任期 1
+09:49:37.653508 server 5 status leader 任期 2
+09:49:37.672052 server 1 status follower 任期 2
+09:49:37.746582 server 6 收到 leader 5 的心跳包, args.Term 2
+09:49:37.746705 server 1 收到 leader 5 的心跳包, args.Term 2
+09:49:37.748257 sever 5 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:37.748412 sever 5 status leader 发送心跳包给 server 6, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:37.748723 server 2 收到 leader 5 的心跳包, args.Term 2
+09:49:37.748942 sever 5 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:37.769168 server 3 status follower 任期 2
+09:49:37.778683 server id 4, status: candidate 选举中, 任期: 2 , 2 回复了
+09:49:37.778732 server id 4, status: candidate, 任期: 2 选举中, 以获得 1 票， 已完成 2 
+09:49:37.784955 server 4 status candidate 任期 2
+09:49:37.815869 server 6 status follower 任期 2
+09:49:37.894977 server 0 status follower 任期 2
+09:49:37.896138 sever 4 在任期 2 选举失败, 重新选举了
+09:49:37.896460 server id 4, status: candidate , 任期 3, 开始选举, 日志为[{0 <nil>}]
+09:49:37.896890 server id 4, status: candidate 选举中, 任期3 , 向6申请投票 
+09:49:37.897117 server id 4, status: candidate 选举中, 任期3 , 向0申请投票 
+09:49:37.897230 server id 4, status: candidate 选举中, 任期3 , 向1申请投票 
+09:49:37.897311 server id 4, status: candidate 选举中, 任期3 , 向2申请投票 
+09:49:37.897411 server id 4, status: candidate 选举中, 任期3 , 向3申请投票 
+09:49:37.897491 server id 4, status: candidate 选举中, 任期3 , 向5申请投票 
+09:49:37.924861 server id 0, status: follower 选举中, 任期: 6 , 2 回复了
+09:49:37.924938 server id 0, status: follower, 任期: 6 选举中, 以获得 1 票， 已完成 2 
+09:49:37.930005 server 5 status leader 任期 2
+09:49:37.947417 server 6 收到 leader 5 的心跳包, args.Term 2
+09:49:37.947633 sever 5 status leader 发送心跳包给 server 6, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:37.948823 server 1 收到 leader 5 的心跳包, args.Term 2
+09:49:37.948997 sever 5 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:37.949286 server 2 收到 leader 5 的心跳包, args.Term 2
+09:49:37.949473 sever 5 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:37.985836 server 2 status follower 任期 2
+09:49:38.000681 server 4 status candidate 任期 3
+09:49:38.030275 server id 0, status: follower 选举中, 任期: 6 , 1 回复了
+09:49:38.030428 server id 0, status: follower, 任期: 6 选举中, 以获得 1 票， 已完成 3 
+09:49:38.043020 server 1 status follower 任期 2
+09:49:38.062490 server 6 status follower 任期 2
+09:49:38.147734 server 1 收到 leader 5 的心跳包, args.Term 2
+09:49:38.149726 sever 5 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:38.150187 server 2 收到 leader 5 的心跳包, args.Term 2
+09:49:38.150395 server 6 收到 leader 5 的心跳包, args.Term 2
+09:49:38.150449 sever 5 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:38.150637 sever 5 status leader 发送心跳包给 server 6, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:38.163701 server 3 status follower 任期 2
+09:49:38.178621 server id 0, status: follower 选举中, 任期: 6 , 1 回复了
+09:49:38.178689 server id 0, status: follower, 任期: 6 选举中, 以获得 1 票， 已完成 3 
+09:49:38.207060 server 5 status leader 任期 2
+09:49:38.211629 server 4 status candidate 任期 3
+09:49:38.308987 server 6 status follower 任期 2
+09:49:38.318200 sever 4 在任期 3 选举失败, 重新选举了
+09:49:38.318391 server id 4, status: candidate , 任期 4, 开始选举, 日志为[{0 <nil>}]
+09:49:38.318539 server id 4, status: candidate 选举中, 任期4 , 向0申请投票 
+09:49:38.318667 server id 4, status: candidate 选举中, 任期4 , 向2申请投票 
+09:49:38.318707 server id 4, status: candidate 选举中, 任期4 , 向1申请投票 
+09:49:38.319094 server 0 status follower 任期 2, 收到 server 4 任期 4 的投票请求
+09:49:38.319329 server id 4, status: candidate 选举中, 任期4, 得到0的投票
+09:49:38.319348 server id 4, status: candidate 选举中, 任期: 4 , 0 回复了
+09:49:38.319360 server id 4, status: candidate, 任期: 4 选举中, 以获得 2 票， 已完成 2 
+09:49:38.319471 server id 4, status: candidate 选举中, 任期4 , 向5申请投票 
+09:49:38.319545 server id 4, status: candidate 选举中, 任期4 , 向3申请投票 
+09:49:38.319606 server id 4, status: candidate 选举中, 任期4 , 向6申请投票 
+09:49:38.320085 server 1 status follower 任期 2, 收到 server 4 任期 4 的投票请求
+09:49:38.320443 server id 4, status: candidate 选举中, 任期4, 得到1的投票
+09:49:38.320462 server 2 status follower 任期 2, 收到 server 4 任期 4 的投票请求
+09:49:38.320468 server id 4, status: candidate 选举中, 任期: 4 , 1 回复了
+09:49:38.320495 server id 4, status: candidate, 任期: 4 选举中, 以获得 3 票， 已完成 3 
+09:49:38.320916 server id 4, status: candidate 选举中, 任期4, 得到2的投票
+09:49:38.321018 server id 4, status: candidate 选举中, 任期: 4 , 2 回复了
+09:49:38.321043 server id 4, status: candidate, 任期: 4 选举中, 以获得 4 票， 已完成 4 
+09:49:38.321095 选举成功，初始化 server id 4, status: leader, 任期: 4 len(rf.log) 1 
+09:49:38.321564 server 0 status follower 任期 4
+09:49:38.323570 server 0 收到 leader 4 的心跳包, args.Term 4
+09:49:38.323879 server 1 收到 leader 4 的心跳包, args.Term 4
+09:49:38.324033 sever 4 status leader 发送心跳包给 server 0, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:38.324169 sever 4 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:38.324323 server 2 收到 leader 4 的心跳包, args.Term 4
+09:49:38.324613 sever 4 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:38.414404 server 1 status follower 任期 4
+09:49:38.422936 server 4 status leader 任期 4
+09:49:38.434751 server 2 status follower 任期 4
+09:49:38.483217 server 5 status leader 任期 2
+09:49:38.524361 server 0 收到 leader 4 的心跳包, args.Term 4
+09:49:38.524608 server 1 收到 leader 4 的心跳包, args.Term 4
+09:49:38.525059 server 2 收到 leader 4 的心跳包, args.Term 4
+09:49:38.525068 sever 4 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:38.525471 sever 4 status leader 发送心跳包给 server 0, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:38.525632 sever 4 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:38.555180 server 6 status follower 任期 2
+09:49:38.557893 server id 3, status: follower, 任期: 2, 选举时间为:788ms rf.electionTime, 超时时间 1.010501642s
+09:49:38.558106 server 3 status candidate 任期 2
+09:49:38.558447 server id 3, status: candidate , 任期 3, 开始选举, 日志为[{0 <nil>}]
+09:49:38.558812 server id 3, status: candidate 选举中, 任期3 , 向0申请投票 
+09:49:38.559197 server id 3, status: candidate 选举中, 任期3 , 向6申请投票 
+09:49:38.559364 server id 3, status: candidate 选举中, 任期3 , 向1申请投票 
+09:49:38.559605 server id 3, status: candidate 选举中, 任期3 , 向4申请投票 
+09:49:38.559729 server id 3, status: candidate 选举中, 任期3 , 向5申请投票 
+09:49:38.559999 server id 3, status: candidate 选举中, 任期3 , 向2申请投票 
+09:49:38.703279 server 4 status leader 任期 4
+09:49:38.725714 server 3 收到 leader 4 的心跳包, args.Term 4
+09:49:38.726229 sever 4 status leader 发送心跳包给 server 3, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:38.726721 server 5 收到 leader 4 的心跳包, args.Term 4
+09:49:38.727226 sever 4 status leader 发送心跳包给 server 5, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:38.727390 server 6 收到 leader 4 的心跳包, args.Term 4
+09:49:38.727426 server 2 收到 leader 4 的心跳包, args.Term 4
+09:49:38.727807 sever 4 status leader 发送心跳包给 server 6, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:38.728056 sever 4 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:38.749144 server 0 status follower 任期 4
+09:49:38.760074 server 5 status follower 任期 4
+09:49:38.785723 server 1 status follower 任期 4
+09:49:38.801426 server 6 status follower 任期 4
+09:49:38.829906 server id 1, status: leader 选举中, 任期: 6 , 2 回复了
+09:49:38.830034 server id 1, status: leader, 任期: 6 选举中, 以获得 1 票， 已完成 2 
+09:49:38.882196 server id 4, status: leader 选举中, 任期: 4 , 3 回复了
+09:49:38.882259 server id 4, status: leader, 任期: 4 选举中, 以获得 4 票， 已完成 5 
+09:49:38.883906 server 2 status follower 任期 4
+09:49:38.926170 server 5 收到 leader 4 的心跳包, args.Term 4
+09:49:38.926306 server 6 收到 leader 4 的心跳包, args.Term 4
+09:49:38.926645 server 3 收到 leader 4 的心跳包, args.Term 4
+09:49:38.926926 sever 4 status leader 发送心跳包给 server 6, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:38.926995 server 2 收到 leader 4 的心跳包, args.Term 4
+09:49:38.927211 sever 4 status leader 发送心跳包给 server 5, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:38.927520 sever 4 status leader 发送心跳包给 server 3, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:38.927611 sever 4 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:38.952414 server 3 status follower 任期 4
+09:49:38.971760 server id 4, status: leader 选举中, 任期: 4 , 3 回复了
+09:49:38.971855 server id 4, status: leader, 任期: 4 选举中, 以获得 1 票， 已完成 3 
+09:49:38.983542 server 4 status leader 任期 4
+09:49:39.036743 server 5 status follower 任期 4
+09:49:39.047703 server 6 status follower 任期 4
+09:49:39.058826 server id 5, status: follower 选举中, 任期: 4 , 4 回复了
+09:49:39.058894 server id 5, status: follower, 任期: 4 选举中, 以获得 5 票， 已完成 6 
+09:49:39.089391 server id 4, status: leader 选举中, 任期: 4 , 1 回复了
+09:49:39.089468 server id 4, status: leader, 任期: 4 选举中, 以获得 1 票， 已完成 4 
+09:49:39.126783 server 2 收到 leader 4 的心跳包, args.Term 4
+09:49:39.126810 server 3 收到 leader 4 的心跳包, args.Term 4
+09:49:39.127566 sever 4 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:39.127262 server 6 收到 leader 4 的心跳包, args.Term 4
+09:49:39.127844 sever 4 status leader 发送心跳包给 server 3, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:39.127951 server 5 收到 leader 4 的心跳包, args.Term 4
+09:49:39.128112 sever 4 status leader 发送心跳包给 server 6, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:39.129145 sever 4 status leader 发送心跳包给 server 5, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:39.157029 server 1 status follower 任期 4
+09:49:39.177326 server 0 status follower 任期 4
+09:49:39.183513 server 3 status follower 任期 4
+09:49:39.263302 server 4 status leader 任期 4
+09:49:39.293519 server 6 status follower 任期 4
+09:49:39.313819 server 5 status follower 任期 4
+09:49:39.332907 server 2 status follower 任期 4
+09:49:39.415645 server 3 status follower 任期 4
+09:49:39.525789 server id 4, status: leader 选举中, 任期: 4 , 2 回复了
+09:49:39.525859 server id 4, status: leader, 任期: 4 选举中, 以获得 1 票， 已完成 2 
+09:49:39.527667 server id 1, status: follower, 任期: 4, 选举时间为:741ms rf.electionTime, 超时时间 1.003004786s
+09:49:39.527814 server 1 status candidate 任期 4
+09:49:39.528078 server id 1, status: candidate , 任期 5, 开始选举, 日志为[{0 <nil>}]
+09:49:39.528424 server id 1, status: candidate 选举中, 任期5 , 向6申请投票 
+09:49:39.528545 server id 1, status: candidate 选举中, 任期5 , 向2申请投票 
+09:49:39.528688 server id 1, status: candidate 选举中, 任期5 , 向4申请投票 
+09:49:39.528772 server id 1, status: candidate 选举中, 任期5 , 向5申请投票 
+09:49:39.528883 server id 1, status: candidate 选举中, 任期5 , 向3申请投票 
+09:49:39.528983 server id 1, status: candidate 选举中, 任期5 , 向0申请投票 
+09:49:39.539651 server 6 status follower 任期 4
+09:49:39.543286 server 4 status leader 任期 4
+09:49:39.590264 server 5 status follower 任期 4
+09:49:39.605218 server id 0, status: follower, 任期: 4, 选举时间为:853ms rf.electionTime, 超时时间 1.08046623s
+09:49:39.605452 server 0 status candidate 任期 4
+09:49:39.606043 server id 0, status: candidate , 任期 5, 开始选举, 日志为[{0 <nil>}]
+09:49:39.606182 server id 0, status: candidate 选举中, 任期5 , 向1申请投票 
+09:49:39.606275 server id 0, status: candidate 选举中, 任期5 , 向2申请投票 
+09:49:39.606383 server id 0, status: candidate 选举中, 任期5 , 向4申请投票 
+09:49:39.606640 server id 0, status: candidate 选举中, 任期5 , 向6申请投票 
+09:49:39.606727 server id 0, status: candidate 选举中, 任期5 , 向5申请投票 
+09:49:39.606916 server id 0, status: candidate 选举中, 任期5 , 向3申请投票 
+09:49:39.607271 server 5 status follower 任期 4, 收到 server 0 任期 5 的投票请求
+09:49:39.607637 server 2 status follower 任期 4, 收到 server 0 任期 5 的投票请求
+09:49:39.607775 server id 0, status: candidate 选举中, 任期5, 得到5的投票
+09:49:39.607845 server id 0, status: candidate 选举中, 任期: 5 , 5 回复了
+09:49:39.607897 server id 0, status: candidate, 任期: 5 选举中, 以获得 2 票， 已完成 2 
+09:49:39.607993 server id 0, status: candidate 选举中, 任期5, 得到2的投票
+09:49:39.608033 server id 0, status: candidate 选举中, 任期: 5 , 2 回复了
+09:49:39.608046 server id 0, status: candidate, 任期: 5 选举中, 以获得 3 票， 已完成 3 
+09:49:39.608300 server 6 status follower 任期 4, 收到 server 0 任期 5 的投票请求
+09:49:39.608707 server id 0, status: candidate 选举中, 任期5, 得到6的投票
+09:49:39.608757 server id 0, status: candidate 选举中, 任期: 5 , 6 回复了
+09:49:39.608771 server id 0, status: candidate, 任期: 5 选举中, 以获得 4 票， 已完成 4 
+09:49:39.608800 选举成功，初始化 server id 0, status: leader, 任期: 5 len(rf.log) 1 
+09:49:39.609458 server 2 收到 leader 0 的心跳包, args.Term 5
+09:49:39.609763 sever 0 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:39.610318 server 5 收到 leader 0 的心跳包, args.Term 5
+09:49:39.610610 server 6 收到 leader 0 的心跳包, args.Term 5
+09:49:39.610615 sever 0 status leader 发送心跳包给 server 5, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:39.610899 sever 0 status leader 发送心跳包给 server 6, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:39.629779 server id 1, status: leader 选举中, 任期: 6 , 0 回复了
+09:49:39.629812 server id 1, status: leader, 任期: 6 选举中, 以获得 1 票， 已完成 3 
+09:49:39.647097 server id 3, status: follower, 任期: 4, 选举时间为:462ms rf.electionTime, 超时时间 519.72954ms
+09:49:39.647267 server 3 status candidate 任期 4
+09:49:39.730821 server 2 收到 leader 4 的心跳包, args.Term 4
+09:49:39.730902 server 2 收到任期落后于自己的 leader 4 
+09:49:39.731385 server 3 收到 leader 4 的心跳包, args.Term 4
+09:49:39.731443 server 5 收到 leader 4 的心跳包, args.Term 4
+09:49:39.731819 server 5 收到任期落后于自己的 leader 4 
+09:49:39.731625 sever 4 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:39.731649 server 1 收到 leader 4 的心跳包, args.Term 4
+09:49:39.732231 server 1 收到任期落后于自己的 leader 4 
+09:49:39.732359 sever 4 status follower 发送心跳包给 server 5, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:39.732441 sever 4 status follower 发送心跳包给 server 3, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:39.732508 sever 4 status follower 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:39.781656 server 2 status follower 任期 5
+09:49:39.785287 server 6 status follower 任期 5
+09:49:39.824013 server 4 status follower 任期 5
+09:49:39.867082 server 5 status follower 任期 5
+09:49:39.879024 server 3 status follower 任期 4
+09:49:39.899242 server 1 status candidate 任期 5
+09:49:39.917051 server id 1, status: leader 选举中, 任期: 6 , 2 回复了
+09:49:39.917145 server id 1, status: leader, 任期: 6 选举中, 以获得 1 票， 已完成 3 
+09:49:39.934398 server id 0, status: leader 选举中, 任期: 5 , 1 回复了
+09:49:39.934457 server id 0, status: leader, 任期: 5 选举中, 以获得 4 票， 已完成 5 
+09:49:40.031059 server 6 status follower 任期 5
+09:49:40.032915 server 0 status leader 任期 5
+09:49:40.104458 server 4 status follower 任期 5
+09:49:40.106713 server id 4, status: follower 选举中, 任期: 5 , 0 回复了
+09:49:40.106916 server id 4, status: follower, 任期: 5 选举中, 以获得 1 票， 已完成 3 
+09:49:40.110858 server 3 status follower 任期 4
+09:49:40.120089 sever 1 在任期 5 选举失败, 重新选举了
+09:49:40.120257 server id 1, status: candidate , 任期 6, 开始选举, 日志为[{0 <nil>}]
+09:49:40.120494 server id 1, status: candidate 选举中, 任期6 , 向6申请投票 
+09:49:40.120615 server id 1, status: candidate 选举中, 任期6 , 向4申请投票 
+09:49:40.120694 server id 1, status: candidate 选举中, 任期6 , 向3申请投票 
+09:49:40.120874 server id 1, status: candidate 选举中, 任期6 , 向0申请投票 
+09:49:40.120994 server id 1, status: candidate 选举中, 任期6 , 向2申请投票 
+09:49:40.121083 server id 1, status: candidate 选举中, 任期6 , 向5申请投票 
+09:49:40.121207 server 4 status follower 任期 5, 收到 server 1 任期 6 的投票请求
+09:49:40.121597 server 3 status follower 任期 4, 收到 server 1 任期 6 的投票请求
+09:49:40.121692 server id 1, status: candidate 选举中, 任期6, 得到4的投票
+09:49:40.121773 server id 1, status: candidate 选举中, 任期: 6 , 4 回复了
+09:49:40.121811 server id 1, status: candidate, 任期: 6 选举中, 以获得 2 票， 已完成 2 
+09:49:40.122107 server 5 status follower 任期 5, 收到 server 1 任期 6 的投票请求
+09:49:40.122217 server id 1, status: candidate 选举中, 任期6, 得到3的投票
+09:49:40.122526 server id 1, status: candidate 选举中, 任期: 6 , 3 回复了
+09:49:40.122538 server id 1, status: candidate, 任期: 6 选举中, 以获得 3 票， 已完成 3 
+09:49:40.122347 server 2 status follower 任期 5, 收到 server 1 任期 6 的投票请求
+09:49:40.122820 server id 1, status: candidate 选举中, 任期6, 得到5的投票
+09:49:40.122891 server id 1, status: candidate 选举中, 任期: 6 , 5 回复了
+09:49:40.122941 server id 1, status: candidate, 任期: 6 选举中, 以获得 4 票， 已完成 4 
+09:49:40.123011 server id 1, status: candidate 选举中, 任期6, 得到2的投票
+09:49:40.123048 server id 1, status: candidate 选举中, 任期: 6 , 2 回复了
+09:49:40.123087 server id 1, status: candidate, 任期: 6 选举中, 以获得 5 票， 已完成 5 
+09:49:40.123129 选举成功，初始化 server id 1, status: leader, 任期: 6 len(rf.log) 1 
+09:49:40.124132 server 5 收到 leader 1 的心跳包, args.Term 6
+09:49:40.124398 server 2 收到 leader 1 的心跳包, args.Term 6
+09:49:40.124568 server 3 收到 leader 1 的心跳包, args.Term 6
+09:49:40.124702 server 4 收到 leader 1 的心跳包, args.Term 6
+09:49:40.124912 sever 1 status leader 发送心跳包给 server 3, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:40.125005 sever 1 status leader 发送心跳包给 server 4, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:40.125086 sever 1 status leader 发送心跳包给 server 5, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:40.125283 sever 1 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:40.143951 server 5 status follower 任期 6
+09:49:40.195694 server 1 status leader 任期 6
+09:49:40.204987 server id 1, status: leader 选举中, 任期: 6 , 2 回复了
+09:49:40.205020 server id 1, status: leader, 任期: 6 选举中, 以获得 1 票， 已完成 2 
+09:49:40.230758 server 2 status follower 任期 6
+09:49:40.237049 server 0 status leader 任期 5
+09:49:40.277638 server id 6, status: follower, 任期: 5, 选举时间为:491ms rf.electionTime, 超时时间 666.927837ms
+09:49:40.277778 server 6 status candidate 任期 5
+09:49:40.277952 server id 6, status: candidate , 任期 6, 开始选举, 日志为[{0 <nil>}]
+09:49:40.278095 server id 6, status: candidate 选举中, 任期6 , 向0申请投票 
+09:49:40.278157 server id 6, status: candidate 选举中, 任期6 , 向3申请投票 
+09:49:40.278356 server id 6, status: candidate 选举中, 任期6 , 向4申请投票 
+09:49:40.278530 server id 6, status: candidate 选举中, 任期6 , 向1申请投票 
+09:49:40.278677 server id 6, status: candidate 选举中, 任期6 , 向5申请投票 
+09:49:40.278833 server id 6, status: candidate 选举中, 任期6 , 向2申请投票 
+09:49:40.279290 server 3 status follower 任期 6, 收到 server 6 任期 6 的投票请求
+09:49:40.279971 server 1 status leader 任期 6, 收到 server 6 任期 6 的投票请求
+09:49:40.280053 server 5 status follower 任期 6, 收到 server 6 任期 6 的投票请求
+09:49:40.280473 server id 6, status: candidate 选举中, 任期: 6 , 1 回复了
+09:49:40.280515 server id 6, status: candidate, 任期: 6 选举中, 以获得 1 票， 已完成 2 
+09:49:40.280601 server id 6, status: candidate 选举中, 任期: 6 , 5 回复了
+09:49:40.280683 server id 6, status: candidate, 任期: 6 选举中, 以获得 1 票， 已完成 3 
+09:49:40.280823 server id 6, status: candidate 选举中, 任期: 6 , 3 回复了
+09:49:40.280871 server id 6, status: candidate, 任期: 6 选举中, 以获得 1 票， 已完成 4 
+09:49:40.324295 server 6 收到 leader 1 的心跳包, args.Term 6
+09:49:40.324519 server 3 收到 leader 1 的心跳包, args.Term 6
+09:49:40.324656 sever 1 status leader 发送心跳包给 server 6, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:40.324862 server 5 收到 leader 1 的心跳包, args.Term 6
+09:49:40.324914 sever 1 status leader 发送心跳包给 server 3, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:40.325087 sever 1 status leader 发送心跳包给 server 5, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:40.336960 server id 1, status: leader 选举中, 任期: 6 , 5 回复了
+09:49:40.337014 server id 1, status: leader, 任期: 6 选举中, 以获得 1 票， 已完成 3 
+09:49:40.343024 server 3 status follower 任期 6
+09:49:40.384294 server 4 status follower 任期 6
+09:49:40.420220 server 5 status follower 任期 6
+09:49:40.441467 server 0 status leader 任期 5
+09:49:40.520022 server id 1, status: leader 选举中, 任期: 6 , 0 回复了
+09:49:40.520090 server id 1, status: leader, 任期: 6 选举中, 以获得 1 票， 已完成 4 
+09:49:40.523708 server 6 status follower 任期 6
+09:49:40.524809 server 5 收到 leader 1 的心跳包, args.Term 6
+09:49:40.525011 server 6 收到 leader 1 的心跳包, args.Term 6
+09:49:40.525066 sever 1 status leader 发送心跳包给 server 5, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:40.525249 sever 1 status leader 发送心跳包给 server 6, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:40.525352 server 3 收到 leader 1 的心跳包, args.Term 6
+09:49:40.525618 sever 1 status leader 发送心跳包给 server 3, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:40.574268 server 3 status follower 任期 6
+09:49:40.611654 server 1 status leader 任期 6
+09:49:40.645765 server 0 status leader 任期 5
+09:49:40.664703 server 4 status follower 任期 6
+09:49:40.679622 server 2 status follower 任期 6
+09:49:40.696694 server 5 status follower 任期 6
+09:49:40.725425 server 2 收到 leader 1 的心跳包, args.Term 6
+09:49:40.725688 sever 1 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:40.725693 server 3 收到 leader 1 的心跳包, args.Term 6
+09:49:40.725935 server 6 收到 leader 1 的心跳包, args.Term 6
+09:49:40.725965 sever 1 status leader 发送心跳包给 server 3, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:40.726197 sever 1 status leader 发送心跳包给 server 6, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:40.753157 server id 6, status: follower 选举中, 任期: 6 , 0 回复了
+09:49:40.753217 server id 6, status: follower, 任期: 6 选举中, 以获得 1 票， 已完成 5 
+09:49:40.806217 server 3 status follower 任期 6
+09:49:40.850834 server 0 status leader 任期 5
+09:49:40.908685 server 6 status follower 任期 6
+09:49:40.925832 server 6 收到 leader 1 的心跳包, args.Term 6
+09:49:40.926097 server 2 收到 leader 1 的心跳包, args.Term 6
+09:49:40.926143 sever 1 status leader 发送心跳包给 server 6, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:40.926338 server 3 收到 leader 1 的心跳包, args.Term 6
+09:49:40.926445 sever 1 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:40.926578 sever 1 status leader 发送心跳包给 server 3, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:40.945160 server id 4, status: follower, 任期: 6, 选举时间为:559ms rf.electionTime, 超时时间 820.371736ms
+09:49:40.945311 server 4 status candidate 任期 6
+09:49:40.945667 server id 4, status: candidate , 任期 7, 开始选举, 日志为[{0 <nil>}]
+09:49:40.945925 server id 4, status: candidate 选举中, 任期7 , 向0申请投票 
+09:49:40.946137 server id 4, status: candidate 选举中, 任期7 , 向6申请投票 
+09:49:40.946283 server id 4, status: candidate 选举中, 任期7 , 向3申请投票 
+09:49:40.946353 server id 4, status: candidate 选举中, 任期7 , 向5申请投票 
+09:49:40.946414 server id 4, status: candidate 选举中, 任期7 , 向1申请投票 
+09:49:40.946481 server id 4, status: candidate 选举中, 任期7 , 向2申请投票 
+09:49:40.973217 server 5 status follower 任期 6
+09:49:41.028006 server 1 status leader 任期 6
+09:49:41.037902 server 3 status follower 任期 6
+09:49:41.055016 server 0 status leader 任期 5
+09:49:41.126509 server 2 收到 leader 1 的心跳包, args.Term 6
+09:49:41.126560 server 6 收到 leader 1 的心跳包, args.Term 6
+09:49:41.126814 server 3 收到 leader 1 的心跳包, args.Term 6
+09:49:41.127076 sever 1 status leader 发送心跳包给 server 6, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:41.127208 sever 1 status leader 发送心跳包给 server 3, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:41.127368 sever 1 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:41.128593 server 2 status follower 任期 6
+09:49:41.137426 server id 4, status: candidate 选举中, 任期: 7 , 5 回复了
+09:49:41.137620 server id 4, status: candidate, 任期: 7 选举中, 以获得 1 票， 已完成 4 
+09:49:41.181445 server id 1, status: leader 选举中, 任期: 6 , 4 回复了
+09:49:41.181533 server id 1, status: leader, 任期: 6 选举中, 以获得 1 票， 已完成 5 
+09:49:41.225260 server 4 status candidate 任期 7
+09:49:41.249452 server id 5, status: follower, 任期: 6, 选举时间为:552ms rf.electionTime, 超时时间 724.583412ms
+09:49:41.249548 server 5 status candidate 任期 6
+09:49:41.249720 server id 5, status: candidate , 任期 7, 开始选举, 日志为[{0 <nil>}]
+09:49:41.249894 server id 5, status: candidate 选举中, 任期7 , 向1申请投票 
+09:49:41.249944 server id 5, status: candidate 选举中, 任期7 , 向6申请投票 
+09:49:41.250056 server id 5, status: candidate 选举中, 任期7 , 向3申请投票 
+09:49:41.250203 server id 5, status: candidate 选举中, 任期7 , 向4申请投票 
+09:49:41.250274 server id 5, status: candidate 选举中, 任期7 , 向2申请投票 
+09:49:41.250416 server id 5, status: candidate 选举中, 任期7 , 向0申请投票 
+09:49:41.259296 server 0 status leader 任期 5
+09:49:41.269110 server 3 status follower 任期 6
+09:49:41.293444 server 6 status follower 任期 6
+09:49:41.294780 server id 4, status: candidate 选举中, 任期: 7 , 6 回复了
+09:49:41.294844 server id 4, status: candidate, 任期: 7 选举中, 以获得 1 票， 已完成 2 
+09:49:41.326890 server 4 收到 leader 1 的心跳包, args.Term 6
+09:49:41.326951 server 4 收到任期落后于自己的 leader 1 
+09:49:41.327331 server 2 收到 leader 1 的心跳包, args.Term 6
+09:49:41.327344 sever 1 status leader 发送心跳包给 server 4, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:41.327611 sever 1 status follower 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:41.327683 server 6 收到 leader 1 的心跳包, args.Term 6
+09:49:41.327905 sever 1 status follower 发送心跳包给 server 6, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:41.444131 server 1 status follower 任期 7
+09:49:41.463883 server 0 status leader 任期 5
+09:49:41.466964 server id 4, status: candidate 选举中, 任期: 7 , 1 回复了
+09:49:41.466991 server id 4, status: candidate, 任期: 7 选举中, 以获得 1 票， 已完成 5 
+09:49:41.481805 sever 4 在任期 7 选举失败, 重新选举了
+09:49:41.482092 server id 4, status: candidate , 任期 8, 开始选举, 日志为[{0 <nil>}]
+09:49:41.482285 server id 4, status: candidate 选举中, 任期8 , 向1申请投票 
+09:49:41.482391 server id 4, status: candidate 选举中, 任期8 , 向6申请投票 
+09:49:41.482418 server id 4, status: candidate 选举中, 任期8 , 向5申请投票 
+09:49:41.482496 server id 4, status: candidate 选举中, 任期8 , 向3申请投票 
+09:49:41.482557 server id 4, status: candidate 选举中, 任期8 , 向0申请投票 
+09:49:41.482765 server id 4, status: candidate 选举中, 任期8 , 向2申请投票 
+09:49:41.482844 server 6 status follower 任期 6, 收到 server 4 任期 8 的投票请求
+09:49:41.483175 server 2 status follower 任期 6, 收到 server 4 任期 8 的投票请求
+09:49:41.483235 server 1 status follower 任期 7, 收到 server 4 任期 8 的投票请求
+09:49:41.483442 server id 4, status: candidate 选举中, 任期8, 得到2的投票
+09:49:41.483460 server id 4, status: candidate 选举中, 任期: 8 , 2 回复了
+09:49:41.483470 server id 4, status: candidate, 任期: 8 选举中, 以获得 2 票， 已完成 2 
+09:49:41.483546 server id 4, status: candidate 选举中, 任期8, 得到1的投票
+09:49:41.483570 server id 4, status: candidate 选举中, 任期: 8 , 1 回复了
+09:49:41.483583 server id 4, status: candidate, 任期: 8 选举中, 以获得 3 票， 已完成 3 
+09:49:41.483817 server id 4, status: candidate 选举中, 任期8, 得到6的投票
+09:49:41.483860 server id 4, status: candidate 选举中, 任期: 8 , 6 回复了
+09:49:41.483872 server id 4, status: candidate, 任期: 8 选举中, 以获得 4 票， 已完成 4 
+09:49:41.483901 选举成功，初始化 server id 4, status: leader, 任期: 8 len(rf.log) 1 
+09:49:41.485133 server 1 收到 leader 4 的心跳包, args.Term 8
+09:49:41.485229 server 2 收到 leader 4 的心跳包, args.Term 8
+09:49:41.485606 server 6 收到 leader 4 的心跳包, args.Term 8
+09:49:41.485881 sever 4 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:41.486276 sever 4 status leader 发送心跳包给 server 6, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:41.486367 sever 4 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:41.493806 server 4 status leader 任期 8
+09:49:41.500685 server 3 status follower 任期 6
+09:49:41.525732 server 5 status candidate 任期 7
+09:49:41.544047 server id 4, status: leader 选举中, 任期: 8 , 0 回复了
+09:49:41.544386 server id 4, status: leader, 任期: 8 选举中, 以获得 1 票， 已完成 3 
+09:49:41.577985 server 2 status follower 任期 8
+09:49:41.610576 server id 3, status: follower 选举中, 任期: 6 , 1 回复了
+09:49:41.610674 server id 3, status: follower, 任期: 6 选举中, 以获得 1 票， 已完成 2 
+09:49:41.610924 server id 3, status: follower , 任期 7, 开始选举, 日志为[{0 <nil>}]
+09:49:41.611196 server id 3, status: follower 选举中, 任期7 , 向5申请投票 
+09:49:41.611415 server id 3, status: follower 选举中, 任期7 , 向4申请投票 
+09:49:41.611524 server id 3, status: follower 选举中, 任期7 , 向1申请投票 
+09:49:41.611650 server id 3, status: follower 选举中, 任期7 , 向2申请投票 
+09:49:41.611739 server id 3, status: follower 选举中, 任期7 , 向6申请投票 
+09:49:41.611836 server id 3, status: follower 选举中, 任期7 , 向0申请投票 
+09:49:41.619684 server id 4, status: leader 选举中, 任期: 8 , 6 回复了
+09:49:41.619816 server id 4, status: leader, 任期: 8 选举中, 以获得 4 票， 已完成 6 
+09:49:41.669003 server 0 status leader 任期 5
+09:49:41.677907 server 6 status follower 任期 8
+09:49:41.685432 server 0 收到 leader 4 的心跳包, args.Term 8
+09:49:41.686098 sever 4 status leader 发送心跳包给 server 0, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:41.686104 server 1 收到 leader 4 的心跳包, args.Term 8
+09:49:41.686375 server 5 收到 leader 4 的心跳包, args.Term 8
+09:49:41.686850 server 2 收到 leader 4 的心跳包, args.Term 8
+09:49:41.686855 server 3 收到 leader 4 的心跳包, args.Term 8
+09:49:41.687249 sever 4 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:41.687325 sever 4 status leader 发送心跳包给 server 5, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:41.687407 sever 4 status leader 发送心跳包给 server 3, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:41.687453 sever 4 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:41.687580 server 6 收到 leader 4 的心跳包, args.Term 8
+09:49:41.687805 sever 4 status leader 发送心跳包给 server 6, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:41.714176 server id 1, status: leader 选举中, 任期: 6 , 0 回复了
+09:49:41.714284 server id 1, status: leader, 任期: 6 选举中, 以获得 1 票， 已完成 3 
+09:49:41.732325 server 3 status follower 任期 8
+09:49:41.735360 server id 4, status: leader 选举中, 任期: 8 , 0 回复了
+09:49:41.735406 server id 4, status: leader, 任期: 8 选举中, 以获得 1 票， 已完成 5 
+09:49:41.752915 server 4 status leader 任期 8
+09:49:41.833836 server 5 status follower 任期 8
+09:49:41.860664 server 1 status follower 任期 8
+09:49:41.873662 server 0 status follower 任期 8
+09:49:41.886843 server 5 收到 leader 4 的心跳包, args.Term 8
+09:49:41.886987 server 6 收到 leader 4 的心跳包, args.Term 8
+09:49:41.887206 sever 4 status leader 发送心跳包给 server 6, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:41.887412 sever 4 status leader 发送心跳包给 server 5, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:41.887478 server 0 收到 leader 4 的心跳包, args.Term 8
+09:49:41.887682 server 1 收到 leader 4 的心跳包, args.Term 8
+09:49:41.887709 sever 4 status leader 发送心跳包给 server 0, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:41.887906 sever 4 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:41.887957 server 3 收到 leader 4 的心跳包, args.Term 8
+09:49:41.887967 server 2 收到 leader 4 的心跳包, args.Term 8
+09:49:41.888212 sever 4 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:41.888255 sever 4 status leader 发送心跳包给 server 3, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:41.953358 server id 6, status: follower 选举中, 任期: 8 , 4 回复了
+09:49:41.953455 server id 6, status: follower, 任期: 8 选举中, 以获得 1 票， 已完成 6 
+09:49:42.012056 server 4 status leader 任期 8
+09:49:42.027068 server 2 status follower 任期 8
+09:49:42.027165 server id 3, status: follower 选举中, 任期: 8 , 2 回复了
+09:49:42.027217 server id 3, status: follower, 任期: 8 选举中, 以获得 1 票， 已完成 3 
+09:49:42.037025 server id 4, status: leader 选举中, 任期: 8 , 5 回复了
+09:49:42.037100 server id 4, status: leader, 任期: 8 选举中, 以获得 1 票， 已完成 6 
+09:49:42.062200 server 6 status follower 任期 8
+09:49:42.072052 server 3 status follower 任期 8
+09:49:42.077875 server 0 status follower 任期 8
+09:49:42.084828 server id 4, status: leader 选举中, 任期: 8 , 3 回复了
+09:49:42.084916 server id 4, status: leader, 任期: 8 选举中, 以获得 4 票， 已完成 5 
+09:49:42.087833 server 3 收到 leader 4 的心跳包, args.Term 8
+09:49:42.088103 sever 4 status leader 发送心跳包给 server 3, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:42.088187 server 0 收到 leader 4 的心跳包, args.Term 8
+09:49:42.088414 sever 4 status leader 发送心跳包给 server 0, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:42.088433 server 2 收到 leader 4 的心跳包, args.Term 8
+09:49:42.088536 server 1 收到 leader 4 的心跳包, args.Term 8
+09:49:42.089095 sever 4 status leader 发送心跳包给 server 1, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:42.089238 sever 4 status leader 发送心跳包给 server 2, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:42.088610 server 5 收到 leader 4 的心跳包, args.Term 8
+09:49:42.088772 server 6 收到 leader 4 的心跳包, args.Term 8
+09:49:42.089525 sever 4 status leader 发送心跳包给 server 5, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+09:49:42.089622 sever 4 status leader 发送心跳包给 server 6, PrevLogIndex is 0 LeaderCommit is 0, rf.commitIndex is 0
+  ... Passed --   5.9  7  348   50084    0
+PASS
+ok  	6.824/raft	14.698s

@@ -583,7 +583,7 @@ func (rf *Raft) atomicReadStatus() string{
 func (rf *Raft) replicatedEntries () { // 客户端发一条日志过来，leader开始复制给其他节点
 	rf.mu.Lock()
 	total := len(rf.peers)
-	nowLogLength := len(rf.log)    // 每次开始复制日志时的长度
+	// nowLogLength := len(rf.log)    // 每次开始复制日志时的长度
 	// log.Printf("server id %d, status: %s, 任期: %d, 开始复制日志\n",rf.me, rf.status, rf.currentTerm)
 	rf.mu.Unlock()
 	majority := total / 2 + 1
@@ -613,6 +613,7 @@ func (rf *Raft) replicatedEntries () { // 客户端发一条日志过来，leade
 						PrevLogTerm: rf.log[rf.nextIndex[server] - 1].Term,
 						Entries: serialEntries(rf.log[rf.nextIndex[server]: ]), // 转化为字节数组
 					}
+					nowLogLength := len(rf.log)
 					rf.mu.Unlock()
 
 
@@ -638,7 +639,7 @@ func (rf *Raft) replicatedEntries () { // 客户端发一条日志过来，leade
 						} else {  // 发送日志成功
 							flag = true
 							rf.nextIndex[server] = len(rf.log)  // 该follower此时和leader日志一致, 刷新要发送的条目索引
-							// rf.matchIndex[server] = len(rf.log) - 1 // 记录最大的匹配的条目索引， 防止并发追加出错
+							rf.matchIndex[server] = nowLogLength - 1 // 记录最大的匹配的条目索引, 用于应用条目
 
 							log.Printf("server id %d, status: %s, 任期: %d, 成功复制日志到 %d\n",rf.me, rf.status, rf.currentTerm, server)
 						}
@@ -661,20 +662,20 @@ func (rf *Raft) replicatedEntries () { // 客户端发一条日志过来，leade
 		cond.Wait()
 	}
 	
-	status := rf.status;
-	replicatedSuccess := (finished >= majority)
+	// status := rf.status;
+	// replicatedSuccess := (finished >= majority)
 	rf.mu.Unlock()
 
-	if rf.killed() == false && status == "leader" && replicatedSuccess { 
-		rf.mu.Lock()
-		log.Printf("server id %d, status: %s, 任期 %d, leader成功将日志复制到大多数是为 %v\n",rf.me, rf.status, rf.currentTerm, rf.log)
-		if nowLogLength - 1 > rf.commitIndex {
-			rf.commitIndex = nowLogLength - 1
-			// newIndex := rf.commitIndex
-			go rf.applyNewCommand(nowLogLength - 1)  // 执行新提交的条目
-		}
-		rf.mu.Unlock()
-	}
+	// if rf.killed() == false && status == "leader" && replicatedSuccess { 
+	// 	rf.mu.Lock()
+	// 	log.Printf("server id %d, status: %s, 任期 %d, leader成功将日志复制到大多数是为 %v\n",rf.me, rf.status, rf.currentTerm, rf.log)
+	// 	if nowLogLength - 1 > rf.commitIndex {
+	// 		rf.commitIndex = nowLogLength - 1
+	// 		// newIndex := rf.commitIndex
+	// 		go rf.applyNewCommand(nowLogLength - 1)  // 执行新提交的条目
+	// 	}
+	// 	rf.mu.Unlock()
+	// }
 }
 
 func (rf *Raft) applyNewCommand(newIndex int) {
@@ -748,6 +749,40 @@ func (rf *Raft) sendHeartBeats() { // 发送心跳包，entries为空，且只�
 					}(i)
 				}
 			}
+
+			rf.mu.Lock() 
+			flag := false
+			newIndex := rf.commitIndex
+			if len(rf.log) - 1 > rf.commitIndex {
+				for i := len(rf.log) - 1; i > rf.commitIndex; i-- {
+					others := 0;
+					for j := 0; j < len(rf.peers); j++ {
+						if j == rf.me 	{
+							continue;
+						}
+						if rf.matchIndex[j] >= i {
+							others++
+						} 
+						if others >= len(rf.peers) / 2 {
+							flag = true;
+							break;
+						}
+					}
+					if flag {
+						newIndex = i;
+						break;
+					}
+				}
+			}
+			if flag {
+				rf.commitIndex = newIndex
+			}
+			rf.mu.Unlock() 
+
+			if flag {
+				go rf.applyNewCommand(newIndex)  // 执行新提交的条目
+			}
+
 			time.Sleep(sendHeartbeatTime)
 		}
 	}
