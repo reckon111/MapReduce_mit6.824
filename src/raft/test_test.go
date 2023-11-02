@@ -151,10 +151,10 @@ func TestBasicAgree2B(t *testing.T) {
 	cfg.end()
 }
 
-//
+
 // check, based on counting bytes of RPCs, that
 // each command is sent to each peer just once.
-//
+
 func TestRPCBytes2B(t *testing.T) {
 	servers := 3
 	cfg := make_config(t, servers, false, false)
@@ -198,6 +198,7 @@ func TestFailAgree2B(t *testing.T) {
 	// disconnect one follower from the network.
 	leader := cfg.checkOneLeader()
 	cfg.disconnect((leader + 1) % servers)
+	log.Printf("断开server %d\n", (leader + 1))
 
 	// the leader and remaining follower should be
 	// able to agree despite the disconnected follower.
@@ -209,7 +210,7 @@ func TestFailAgree2B(t *testing.T) {
 
 	// re-connect
 	cfg.connect((leader + 1) % servers)
-
+	log.Printf("重新连上server %d\n", (leader + 1))
 	// the full set of servers should preserve
 	// previous agreements, and be able to agree
 	// on new commands.
