@@ -103,7 +103,7 @@ func make_config(t *testing.T, n int, unreliable bool, snapshot bool) *config {
 
 // shut down a Raft server but save its persistent state.
 func (cfg *config) crash1(i int) {
-	log.Printf("server %d crashed\n", i)
+	// log.Printf("server %d crashed\n", i)
 	cfg.disconnect(i)
 	cfg.net.DeleteServer(i) // disable client connections to the server.
 
@@ -219,6 +219,8 @@ func (cfg *config) applierSnap(i int, applyCh chan ApplyMsg) {
 				e := labgob.NewEncoder(w)
 				v := m.Command
 				e.Encode(v)
+
+				log.Printf("server %d 在索引 %d 创建了快照\n", i, m.CommandIndex)
 				cfg.rafts[i].Snapshot(m.CommandIndex, w.Bytes())
 			}
 		} else {
@@ -284,7 +286,7 @@ func (cfg *config) start1(i int, applier func(int, chan ApplyMsg)) {
 	srv := labrpc.MakeServer()
 	srv.AddService(svc)
 	cfg.net.AddServer(i, srv)
-	log.Printf("server %d 重新恢复\n", i);
+	// log.Printf("server %d 重新恢复\n", i);
 }
 
 func (cfg *config) checkTimeout() {
@@ -490,7 +492,7 @@ func (cfg *config) wait(index int, n int, startTerm int) interface{} {
 	return cmd
 }
 
-// do a complete agreement.
+// do a complete agreement. 所有节点都要应用
 // it might choose the wrong leader initially,
 // and have to re-submit after giving up.
 // entirely gives up after about 10 seconds.

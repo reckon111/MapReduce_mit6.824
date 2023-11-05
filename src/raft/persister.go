@@ -54,6 +54,8 @@ func (ps *Persister) RaftStateSize() int {
 	return len(ps.raftstate)
 }
 
+// 每次创建快照，持久化lastIncludedTerm，lastIncludedIndex，且rf.log保存最后一个条目
+// 就不用调用此函数了
 // Save both Raft state and K/V snapshot as a single atomic action,
 // to help avoid them getting out of sync.
 func (ps *Persister) SaveStateAndSnapshot(state []byte, snapshot []byte) {
